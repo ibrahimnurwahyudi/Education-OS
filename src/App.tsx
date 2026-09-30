@@ -224,6 +224,28 @@ function buildAdminRecords(module:string,submenu:string):RecordItem[]{
       else value=field+' · '+year+' · '+no;
       data[field]=value;
     });
+    const formFields=getRegulatoryFormSpec(module,submenu,spec).fields;
+    formFields.forEach((field)=>{
+      if(data[field.label]) return;
+      const l=field.label.toLowerCase();
+      if(l.includes('identitas')||l.includes('nama')||l.includes('objek')||l.includes('prospek')||l.includes('pihak terkait')||l.includes('murid')) data[field.label]=student;
+      else if(l.includes('kode')||l.includes('referensi')||l.includes('nomor')) data[field.label]='EDU-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('scope')) data[field.label]='education-os-demo · Nusantara Learning Center';
+      else if(l.includes('relasi')) data[field.label]=spec.relations[i%spec.relations.length];
+      else if(l.includes('kontak')||l.includes('email')) data[field.label]=student.toLowerCase().replace(/ /g,'.')+'@education-os.demo';
+      else if(l.includes('program')||l.includes('kurikulum')) data[field.label]=['Program Reguler','OSN Academy','Intensive STEM','Private Mentoring'][i%4];
+      else if(l.includes('kompetensi')||l.includes('capaian')) data[field.label]=['Problem Solving','Scientific Reasoning','Computational Thinking','Algebraic Reasoning'][i%4];
+      else if(l.includes('periode')||l.includes('tahun')) data[field.label]=year;
+      else if(l.includes('tanggal')||l.includes('date')) data[field.label]=date;
+      else if(l.includes('owner')||l.includes('pemilik')||l.includes('penanggung jawab')||l.includes('reviewer')) data[field.label]=i%2?'Academic Coordinator':'Academic Director';
+      else if(l.includes('evidence')||l.includes('bukti')||l.includes('sumber')) data[field.label]='EV-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('nilai')||l.includes('debit')||l.includes('kredit')||l.includes('jumlah')||l.includes('nominal')) data[field.label]=String(1250000+i*175000);
+      else if(l.includes('status')) data[field.label]=status;
+      else if(l.includes('tahap')||l.includes('stage')) data[field.label]=spec.lifecycle[i%spec.lifecycle.length];
+      else if(l.includes('kebutuhan')||l.includes('deskripsi')||l.includes('catatan')||l.includes('konteks')||l.includes('kondisi')||l.includes('tindakan')||l.includes('strategi')) data[field.label]='Catatan '+submenu+' · '+student+' · '+year;
+      else if(l.includes('model')||l.includes('provider')) data[field.label]=['EDUHOST','AI Gateway','Education OS Core'][i%3];
+      else data[field.label]=field.label+' · '+year+' · '+no;
+    });
     return {id:spec.entity.slice(0,4).toUpperCase()+'-'+year.slice(0,4)+'-'+no,title:data[spec.fields[0]]||spec.entity+' '+no,meta:data[spec.fields[1]]||year,status:data['Status']||data['Status operasional']||status,detail:data[spec.fields[2]]||spec.purpose,data,seedTotal:profile.total,seedActive:profile.active,seedReview:profile.review};
   });
 }
