@@ -5,7 +5,7 @@ type Role='Siswa'|'Orang Tua'|'Mentor'|'Institusi'|'Mentor OSN';
 type DemoRole=Role|'Administrator';
 type Module={name:string;icon:any;description:string;submenus:string[];actions:string[]};
 type WorkflowAudit={at:string;action:string;from:string;to:string;actor:string;reason:string};
-type RecordItem={id:string;title:string;meta:string;status:string;detail:string;data?:Record<string,string>;audit?:WorkflowAudit[]};
+type RecordItem={id:string;title:string;meta:string;status:string;detail:string;data?:Record<string,string>;audit?:WorkflowAudit[];seedTotal?:number;seedActive?:number;seedReview?:number;};
 type DemoAccount={username:string;password:string;role:DemoRole;name:string;personId:string;email:string;summary:string;organization:string;profile:string};
 type DemoSession=DemoAccount;
 
@@ -137,30 +137,85 @@ function buildPersonalRecords(session:DemoSession,module:string,submenu:string):
 
 function buildAdminRecords(module:string,submenu:string):RecordItem[]{
   const spec=getAdminDomainSpec(module,submenu);
-  const names=['Nusantara Learning Center','Cakrawala Education Hub','Bina Prestasi Academy','Mandiri Belajar Institute','Garuda Edu Center','Mitra Akademika','Pusat Belajar Nusantara','Cendekia Learning House'];
-  const subjects=['Matematika','Fisika','Kimia','Biologi','Informatika','Bahasa Indonesia','Bahasa Inggris','Astronomi'];
-  return Array.from({length:8},(_,i)=>{
+  const key=(module+' · '+submenu).toLowerCase();
+  const students=[
+    'Ahmad Fauzan','Nadia Putri Lestari','Raka Pratama','Salsabila Azzahra','Fikri Ramadhan','Alya Maharani',
+    'Bima Aditya','Citra Kirana','Daffa Maulana','Keisha Anindya','Rizky Alfarizi','Nabila Khairunnisa'
+  ];
+  const mentors=['Dr. Rendra Wijaya, M.Si.','Maya Kartika, S.Pd.','Fajar Nugroho, M.Kom.','Dian Permata, S.Si.','Arif Hidayat, S.Pd.'];
+  const subjects=['Matematika Lanjut','Fisika','Kimia','Biologi','Informatika','Bahasa Inggris','Bahasa Indonesia','Astronomi'];
+  const osn=['Matematika','Fisika','Kimia','Biologi','Informatika','Astronomi'];
+  const years=['2024/2025','2025/2026','2026/2027'];
+  const profile=
+    key.includes('siswa')?{total:250,active:231,review:7}:
+    key.includes('orang tua')?{total:196,active:181,review:5}:
+    key.includes('mentor osn')?{total:18,active:15,review:1}:
+    key.includes('mentor')?{total:42,active:36,review:3}:
+    key.includes('kampus')||key.includes('cabang')?{total:4,active:4,review:0}:
+    key.includes('institusi')?{total:1,active:1,review:0}:
+    key.includes('user')?{total:318,active:301,review:4}:
+    key.includes('role')?{total:12,active:12,review:0}:
+    key.includes('program')?{total:7,active:7,review:0}:
+    key.includes('mata pelajaran')?{total:24,active:24,review:0}:
+    key.includes('kurikulum')?{total:3,active:3,review:0}:
+    key.includes('kompetensi')?{total:86,active:79,review:4}:
+    key.includes('tahun akademik')?{total:3,active:1,review:0}:
+    key.includes('dokumen')?{total:428,active:392,review:9}:
+    key.includes('asesmen')||key.includes('assessment')||key.includes('hasil')?{total:1840,active:1712,review:34}:
+    key.includes('osn')||key.includes('arena')||key.includes('simulasi')||key.includes('problem')?{total:486,active:421,review:21}:
+    key.includes('laporan')||key.includes('evidence')||key.includes('learning passport')?{total:1290,active:1188,review:27}:
+    key.includes('kelas')||key.includes('live')||key.includes('sesi')?{total:1368,active:1284,review:18}:
+    key.includes('finance')||key.includes('billing')||key.includes('pembayaran')?{total:742,active:704,review:12}:
+    key.includes('accounting')||key.includes('jurnal')||key.includes('anggaran')?{total:1216,active:1194,review:8}:
+    key.includes('compliance')||key.includes('kepatuhan')?{total:38,active:34,review:2}:
+    key.includes('crm')||key.includes('admission')||key.includes('leads')?{total:563,active:417,review:16}:
+    key.includes('ai')||key.includes('eduhost')?{total:3920,active:3614,review:41}:{total:12,active:10,review:1};
+  return Array.from({length:12},(_,i)=>{
     const no=String(i+1).padStart(3,'0');
+    const student=students[i%students.length],mentor=mentors[i%mentors.length],subject=subjects[i%subjects.length],year=years[i%years.length];
+    const date=['2024-08-14','2024-11-22','2025-02-08','2025-05-17','2025-08-26','2025-12-03','2026-02-19','2026-04-11','2026-06-20','2026-07-28','2026-08-16','2026-09-18'][i];
+    const status=spec.lifecycle[i%spec.lifecycle.length];
     const data:Record<string,string>={};
     spec.fields.forEach((field,fi)=>{
       const l=field.toLowerCase();
       let value='';
-      if(l.includes('nama')||l.includes('identitas')||l.includes('program')||l.includes('peserta didik')||l.includes('siswa')||l.includes('contact')||l.includes('customer')||l.includes('debtor')||l.includes('mentor')) value=names[i]||'Nusantara Learning Center';
-      else if(l.includes('kode')) value='EDU-'+no;
-      else if(l.includes('subject')||l.includes('mata pelajaran')||l.includes('kompetensi')) value=subjects[i];
-      else if(l.includes('amount')||l.includes('nominal')||l.includes('harga')||l.includes('budget')||l.includes('actual')) value='Rp '+(1250000+i*375000).toLocaleString('id-ID');
-      else if(l.includes('tanggal')||l.includes('periode')||l.includes('date')) value='2026-09-'+String(10+i).padStart(2,'0');
-      else if(l.includes('owner')||l.includes('penanggung jawab')||l.includes('reviewer')) value=i%2?'Academic Coordinator':'Academic Director';
-      else if(l.includes('source')||l.includes('referensi')) value='SRC-'+no;
-      else if(l.includes('status')) value=spec.lifecycle[i%spec.lifecycle.length];
-      else if(l.includes('role')) value=i%2?'Mentor':'Administrator';
-      else if(l.includes('scope')) value='Tenant · education-os-demo';
+      if(l.includes('nama')||l.includes('identitas')||l.includes('peserta didik')||l==='siswa'||l.includes('peserta')) value=student;
+      else if(l.includes('wali')) value=['Budi Santoso','Rina Lestari','Andi Prabowo','Dewi Maharani'][i%4];
+      else if(l.includes('kontak')||l.includes('email')) value=student.toLowerCase().replace(/ /g,'.')+'@education-os.demo';
+      else if(l.includes('program')) value=['Program Reguler','OSN Academy','Intensive STEM','Private Mentoring'][i%4];
+      else if(l.includes('kelas')) value=['Kelas 10A','Kelas 10B','Kelas 11A','Kelas 11B','Kelas 12A'][i%5];
+      else if(l.includes('mata pelajaran')||l.includes('subject')||l.includes('bidang ajar')||l.includes('disiplin')) value=key.includes('osn')?osn[i%osn.length]:subject;
+      else if(l.includes('mentor')) value=mentor;
+      else if(l.includes('credential')) value=['S2 Pendidikan','S2 Matematika','S2 Informatika','S1 Pendidikan + Sertifikasi'][i%4];
+      else if(l.includes('track')) value=['National Training','Provincial Preparation','Olympiad Foundation','Advanced Problem Solving'][i%4];
+      else if(l.includes('tahun')||l.includes('periode')||l.includes('period')) value=year;
+      else if(l.includes('tanggal')||l.includes('date')||l.includes('waktu')) value=date;
+      else if(l.includes('kode')) value='EDU-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('user id')) value='USR-'+String(1000+i);
+      else if(l.includes('role')) value=['Student','Parent','Mentor','Academic Coordinator'][i%4];
+      else if(l.includes('scope')) value='education-os-demo · Nusantara Learning Center';
+      else if(l.includes('permission')) value=['learning.read','assessment.manage','mentor.review','report.approve'][i%4];
+      else if(l.includes('lokasi')) value=['Surabaya','Mojokerto','Sidoarjo','Malang'][i%4]+' · Jawa Timur';
+      else if(l.includes('status')) value=status;
+      else if(l.includes('owner')||l.includes('penanggung jawab')||l.includes('reviewer')||l.includes('dicatat oleh')) value=i%3===0?'Academic Director':i%3===1?'Academic Coordinator':mentor;
+      else if(l.includes('source')||l.includes('sumber')||l.includes('referensi')) value='EDU-EVIDENCE-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('evidence')) value='EV-'+year.slice(0,4)+'-'+no+' · attendance/assessment/submission';
+      else if(l.includes('kompetensi')) value=['Problem Solving','Algebraic Reasoning','Scientific Reasoning','Computational Thinking'][i%4];
       else if(l.includes('level')) value=['Foundation','Developing','Competitive','Mastered'][i%4];
-      else if(l.includes('type')||l.includes('jenis')) value=module==='Finance'?'Operational Transaction':submenu;
-      else value=field+' '+no;
+      else if(l.includes('skor')||l.includes('nilai')) value=String(68+i*2)+' / 100';
+      else if(l.includes('target')) value=String(80+i%5*3)+' / 100';
+      else if(l.includes('jumlah')||l.includes('nominal')||l.includes('amount')||l.includes('harga')||l.includes('budget')||l.includes('actual')) value='Rp '+(1850000+i*425000).toLocaleString('id-ID');
+      else if(l.includes('durasi')) value=(60+i*5)+' menit';
+      else if(l.includes('soal')||l.includes('problem')) value='OSN-'+subject.replace(/[^A-Za-z]/g,'').slice(0,4).toUpperCase()+'-'+no;
+      else if(l.includes('dokumen')) value='DOC-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('laporan')) value='LAP-'+year.slice(0,4)+'-'+no;
+      else if(l.includes('catatan')||l.includes('observasi')||l.includes('interpretasi')||l.includes('rekomendasi')||l.includes('feedback')) value='Catatan operasional '+year+' untuk '+student+'; ditinjau berdasarkan evidence pembelajaran.';
+      else if(l.includes('tipe')||l.includes('jenis')||l.includes('type')) value=key.includes('finance')?'Operational Transaction':key.includes('osn')?'Olympiad Training':submenu;
+      else if(l.includes('anak terhubung')) value=String(1+(i%3));
+      else value=field+' · '+year+' · '+no;
       data[field]=value;
     });
-    return {id:spec.entity.slice(0,4).toUpperCase()+'-'+no,title:data[spec.fields[0]]||spec.entity+' '+no,meta:data[spec.fields[1]]||module, status:data['Status']||data['Status operasional']||spec.lifecycle[i%spec.lifecycle.length],detail:data[spec.fields[2]]||spec.purpose,data};
+    return {id:spec.entity.slice(0,4).toUpperCase()+'-'+year.slice(0,4)+'-'+no,title:data[spec.fields[0]]||spec.entity+' '+no,meta:data[spec.fields[1]]||year,status:data['Status']||data['Status operasional']||status,detail:data[spec.fields[2]]||spec.purpose,data,seedTotal:profile.total,seedActive:profile.active,seedReview:profile.review};
   });
 }
 
@@ -631,7 +686,7 @@ function getRegulatoryFormSpec(module:string,submenu:string,spec:AdminDomainSpec
 
 function AdminOperationalWorkspace({module,submenu,onAction}:{module:Module;submenu:string;onAction:(a:string)=>void}){
   const spec=getAdminDomainSpec(module.name,submenu);
-  const [rows,setRows]=useState<RecordItem[]>(buildAdminRecords(module.name,submenu).slice(0,8));
+  const [rows,setRows]=useState<RecordItem[]>(buildAdminRecords(module.name,submenu));
   const [q,setQ]=useState(''),[status,setStatus]=useState('Semua');
   const [editing,setEditing]=useState<RecordItem|null>(null),[createOpen,setCreateOpen]=useState(false),[error,setError]=useState('');
   const [selected,setSelected]=useState<RecordItem|null>(null);
@@ -648,7 +703,7 @@ function AdminOperationalWorkspace({module,submenu,onAction}:{module:Module;subm
   const runWorkflowAction=(r:RecordItem,a:string)=>{const lower=a.toLowerCase();const current=spec.lifecycle.indexOf(r.status);if(current<0){setError('Status record tidak cocok dengan lifecycle entity.');return}const backwards=lower.includes('reject')||lower.includes('tolak')||lower.includes('kembali')||lower.includes('revisi');const targetIndex=backwards?current-1:current+1;if(targetIndex<0||targetIndex>=spec.lifecycle.length){setError(backwards?'Record sudah berada pada tahap awal lifecycle.':'Record sudah berada pada tahap akhir lifecycle.');return}const nextStatus=spec.lifecycle[targetIndex];const reason=window.prompt('Alasan perubahan status untuk '+a+' (wajib):','');if(reason===null||!reason.trim()){setError('Perubahan status dibatalkan: alasan wajib diisi.');return}const event:WorkflowAudit={at:new Date().toISOString(),action:a,from:r.status,to:nextStatus,actor:'Administrator',reason:reason.trim()};const updated={...r,status:nextStatus,data:{...(r.data||{}),Status:nextStatus,'Last action':a,'Last transition reason':reason.trim()},audit:[...(r.audit||[]),event]};setRows(v=>v.map(x=>x.id===r.id?updated:x));setSelected(updated);setError('');};
   return <div className="space-y-5">
     <section className="rounded-3xl border border-cyan-300/15 bg-cyan-300/[.035] p-5"><div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"><div><div className="text-[10px] uppercase tracking-widest text-cyan-300">ADMIN DOMAIN WORKSPACE</div><h2 className="mt-1 text-xl font-semibold">{spec.entity}</h2> </div><div className="flex flex-wrap gap-2">{spec.actions.map(a=><button key={a} onClick={()=>action(a)} className="rounded-xl bg-cyan-300 px-3 py-2 text-xs font-semibold text-slate-950"><Plus size={14} className="mr-1 inline"/>{a}</button>)}</div></div><div className="mt-4 grid gap-3 md:grid-cols-3"><div className="rounded-2xl border border-white/10 bg-slate-950/30 p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">Lifecycle</div><div className="mt-2 flex flex-wrap gap-1.5">{spec.lifecycle.map(r=><span key={r} className="rounded-full border border-white/10 px-2 py-1 text-[10px] text-slate-300">{r}</span>)}</div></div><div className="rounded-2xl border border-white/10 bg-slate-950/30 p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">Evidence</div><div className="mt-2 flex flex-wrap gap-1.5">{['Source','Owner','Audit trail'].map(r=><span key={r} className="rounded-full border border-cyan-300/10 px-2 py-1 text-[10px] text-cyan-100">{r}</span>)}</div></div><div className="rounded-2xl border border-white/10 bg-slate-950/30 p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">Domain relations</div><div className="mt-2 flex flex-wrap gap-1.5">{spec.relations.map(r=><span key={r} className="rounded-full border border-white/10 px-2 py-1.5 text-[10px] text-cyan-100">{r}</span>)}</div></div></div></section>
-    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{spec.summary.map((x,i)=><div key={x} className="rounded-2xl border border-white/10 bg-white/[.025] p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">{x}</div><div className="mt-2 text-xl font-semibold">{i===0?rows.length:i===1?rows.filter(r=>r.status==='Aktif').length:i===2?rows.filter(r=>r.status==='Review').length:'—'}</div></div>)}</section>
+    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{spec.summary.map((x,i)=><div key={x} className="rounded-2xl border border-white/10 bg-white/[.025] p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">{x}</div><div className="mt-2 text-xl font-semibold">{i===0?(rows[0]?.seedTotal||rows.length):i===1?(rows[0]?.seedActive||rows.filter(r=>r.status==='Aktif').length):i===2?(rows[0]?.seedReview||rows.filter(r=>r.status==='Review').length):'—'}</div></div>)}</section>
     <section className="rounded-3xl border border-white/10 bg-white/[.025]"><div className="flex flex-col gap-3 border-b border-white/10 p-5 md:flex-row"><div className="flex flex-1 items-center gap-2 rounded-xl border border-white/10 px-3"><Search size={14}/><input value={q} onChange={e=>setQ(e.target.value)} className="w-full bg-transparent py-2 text-xs outline-none" placeholder={'Cari '+spec.entity.toLowerCase()+'...'}/></div><select value={status} onChange={e=>setStatus(e.target.value)} className="field md:max-w-[180px]"><option>Semua</option>{spec.lifecycle.map(x=><option key={x}>{x}</option>)}<option>Aktif</option><option>Review</option></select></div><div className="hidden border-b border-white/10 px-5 py-3 md:grid md:grid-cols-[minmax(180px,1.5fr)_repeat(3,minmax(150px,1fr))_120px_120px] md:gap-4">{spec.fields.slice(0,4).map(f=><div key={f} className="text-[10px] uppercase tracking-widest text-slate-600">{f}</div>)}<div>Status</div><div>Aksi</div></div><div className="divide-y divide-white/10">{filtered.map(r=><div key={r.id} className="grid gap-3 p-5 md:grid-cols-[minmax(180px,1.5fr)_repeat(3,minmax(150px,1fr))_120px_120px] md:items-center">{spec.fields.slice(0,4).map((field,fi)=><div key={field} className={fi===0?'min-w-0':''}><div className="text-xs text-slate-300">{r.data?.[field]|| (fi===0?r.title:fi===1?r.meta:fi===2?r.detail:'—')}</div>{fi===0&&<div className="mt-1 text-[10px] text-slate-600">{r.id}</div>}</div>)}<span className="w-fit rounded-full border border-white/10 px-2 py-1 text-[10px]">{r.status}</span><div className="flex gap-2"><button onClick={()=>setSelected(r)} className="rounded-lg border border-cyan-300/15 px-2 py-1.5 text-[10px] text-cyan-100">Buka</button><button onClick={()=>openEdit(r)} className="rounded-lg border border-white/10 px-2 py-1.5 text-[10px]">Edit</button><button onClick={()=>{if(window.confirm('Hapus '+r.title+'?'))setRows(v=>v.filter(x=>x.id!==r.id))}} className="rounded-lg border border-red-300/15 px-2 py-1.5 text-[10px] text-red-200">Hapus</button></div></div>)}</div>{!filtered.length&&<div className="p-10 text-center"><div className="font-semibold">{spec.empty}</div></div>}</section>
         {createOpen&&<Modal title={actionContext||((editing?'Edit ':'Tambah ')+spec.entity)} onClose={closeForm}>{error&&<div className="mb-4 rounded-xl border border-red-300/20 bg-red-300/5 p-3 text-xs text-red-200">{error}</div>}<div className="grid gap-3 md:grid-cols-2">{getRegulatoryFormSpec(module.name,submenu,spec,actionContext).fields.map(f=><label key={f.label}><span className="mb-1.5 block text-[10px] uppercase tracking-widest text-slate-500">{f.label}{f.required&&<span className="ml-1 text-cyan-300">*</span>}</span>{f.kind==='select'?<select className="field" value={formValues[f.label]||f.options?.[0]||''} onChange={e=>{setError('');setFormValues(v=>({...v,[f.label]:e.target.value}))}}>{(f.options||[]).map(o=><option key={o}>{o}</option>)}</select>:f.kind==='textarea'?<textarea className="field min-h-24" value={formValues[f.label]||''} onChange={e=>{setError('');setFormValues(v=>({...v,[f.label]:e.target.value}))}} placeholder={f.label}/>:<input className="field" type={f.kind==='number'?'number':f.kind==='date'?'date':f.kind==='datetime'?'datetime-local':'text'} value={formValues[f.label]||''} onChange={e=>{setError('');setFormValues(v=>({...v,[f.label]:e.target.value}))}} placeholder={f.label}/>}</label>)}</div><div className="mt-5 flex justify-end gap-2"><div className="flex gap-2"><button onClick={closeForm} className="rounded-xl border border-white/10 px-4 py-2 text-xs">Batal</button><button onClick={save} className="rounded-xl bg-cyan-300 px-4 py-2 text-xs font-semibold text-slate-950">Simpan {spec.entity}</button></div></div></Modal>}
     {selected&&<Modal title={selected.title||spec.entity} onClose={()=>setSelected(null)}>
