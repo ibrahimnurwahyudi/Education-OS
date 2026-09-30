@@ -1,0 +1,99 @@
+[
+  {
+    "name": "Administrator KPI exception detail form",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "KPI & Alerts exception form",
+      "Tinjau exception action",
+      "regulatory supervision fields",
+      "exception evidence and corrective action",
+      "required validation"
+    ],
+    "description": "Verifies the exception action opens a dedicated domain form and blocks an incomplete material record.",
+    "steps": [
+      "Open Administrator → Executive Overview → KPI & Alerts",
+      "Choose Tinjau exception",
+      "Inspect indicator, threshold, evidence, risk, owner, corrective action, due date, reviewer, and lifecycle fields",
+      "Submit without the required fields"
+    ],
+    "expected": "The dedicated exception form is shown and incomplete material data is rejected."
+  },
+  {
+    "name": "Administrator KPI evidence detail form",
+    "viewport": "desktop",
+    "covers": [
+      "Buka evidence action",
+      "evidence provenance",
+      "verification workflow",
+      "evidence source and period"
+    ],
+    "description": "Verifies the evidence action uses a distinct evidence form with provenance and verification controls.",
+    "steps": [
+      "Open Administrator → Executive Overview → KPI & Alerts",
+      "Choose Buka evidence",
+      "Inspect evidence source, period, factual description, owner, verifier, verification status, and review fields",
+      "Save the evidence record"
+    ],
+    "expected": "The evidence-specific form opens and a valid evidence record can be saved."
+  },
+  {
+    "name": "Administrator academic period workflow",
+    "viewport": "desktop",
+    "covers": [
+      "academic period domain form",
+      "date validation",
+      "required-field validation",
+      "create and edit",
+      "record retention"
+    ],
+    "description": "Verifies an academic period uses domain-specific fields, validates dates, and remains visible after saving.",
+    "steps": [
+      "Open Administrator → Academic ERP → Kalender / Periode",
+      "Choose the create-period action",
+      "Submit with a required field missing",
+      "Enter valid start and end dates and save",
+      "Open the saved period"
+    ],
+    "expected": "Invalid input is rejected, then a valid academic period is created and its detail can be opened."
+  },
+  {
+    "name": "Administrator curriculum and assessment alignment",
+    "viewport": "desktop",
+    "covers": [
+      "curriculum form",
+      "assessment form",
+      "graduate competency alignment",
+      "content scope",
+      "learning process and assessment"
+    ],
+    "description": "Verifies curriculum and assessment forms expose traceability between competency, content, learning process, instrument, rubric, result, and review.",
+    "steps": [
+      "Open Administrator → Master Data → Kurikulum",
+      "Inspect version, validity period, graduate competency, content scope, and learning objective fields",
+      "Open Administrator → Academic ERP → Asesmen / Nilai",
+      "Inspect purpose, competency, content scope, instrument, rubric, participant, result, and reviewer"
+    ],
+    "expected": "Both domains expose distinct forms with traceability and review controls."
+  },
+  {
+    "name": "Role workspace save and mobile guardrail",
+    "viewport": "mobile",
+    "covers": [
+      "non-admin action form save",
+      "local record retention",
+      "mobile form usability",
+      "required-field guardrail",
+      "workspace refresh retention"
+    ],
+    "description": "Verifies a non-admin action form saves a record, keeps it after the workspace rerenders, and remains usable on mobile.",
+    "steps": [
+      "Sign in with the Ahmad Fauzan demo account",
+      "Open a personal submenu with an action such as Lihat tugas",
+      "Open the form and attempt to save without the primary field",
+      "Enter the primary field and save",
+      "Navigate away and return to the same submenu"
+    ],
+    "expected": "Incomplete submission is blocked, a valid record is created, and the saved record remains visible after returning to the submenu."
+  }
+]
