@@ -176,8 +176,17 @@ function buildAdminRecords(module:string,submenu:string):RecordItem[]{
     const date=['2024-08-14','2024-11-22','2025-02-08','2025-05-17','2025-08-26','2025-12-03','2026-02-19','2026-04-11','2026-06-20','2026-07-28','2026-08-16','2026-09-18'][i];
     const status=spec.lifecycle[i%spec.lifecycle.length];
     const data:Record<string,string>={};
+    const parentName=['Budi Santoso','Dewi Lestari','Agus Setiawan','Rina Wulandari','Hendra Wijaya','Maya Sari'][i%6];
+    const childName=students[(i+2)%students.length];
+    if(key==='master data · orang tua / wali'){
+      data['Identitas wali']=parentName;
+      data['Kontak']='+62 812-'+String(3400+i).padStart(4,'0')+'-'+String(1200+i).padStart(4,'0');
+      data['Anak terhubung']=childName+' · STU-'+String(i+1).padStart(3,'0');
+      data['Status relasi']=spec.lifecycle[i%spec.lifecycle.length];
+    }
     spec.fields.forEach((field,fi)=>{
       const l=field.toLowerCase();
+      if(key==='master data · orang tua / wali' && data[field]) return;
       let value='';
       if(l.includes('nama')||l.includes('identitas')||l.includes('peserta didik')||l==='siswa'||l.includes('peserta')) value=student;
       else if(l.includes('wali')) value=['Budi Santoso','Rina Lestari','Andi Prabowo','Dewi Maharani'][i%4];
