@@ -597,14 +597,63 @@ function getAdminDomainSpec(module:string,submenu:string):AdminDomainSpec{
 type RegulatoryField={label:string;kind:'text'|'date'|'datetime'|'number'|'select'|'textarea';required?:boolean;options?:string[];help?:string};
 type RegulatoryFormSpec={standard:string;basis:string[];scope:string;fields:RegulatoryField[];validation:string[]};
 
+function buildDynamicAdminFields(module:string,submenu:string,spec:AdminDomainSpec):RegulatoryField[]{
+  const m=module.toLowerCase(), s=submenu.toLowerCase(), entity=spec.entity;
+  const commonByDomain:RegulatoryField[] =
+    m==='master data' ? [
+      {label:'Identitas '+entity,kind:'text',required:true},{label:'Kode / referensi '+entity,kind:'text'},
+      {label:'Scope institusi / tenant',kind:'text',required:true},{label:'Relasi utama '+spec.relations[0],kind:'text',required:true},
+      {label:'Pemilik data',kind:'text',required:true},{label:'Sumber / evidence',kind:'text'},
+      {label:'Catatan operasional',kind:'textarea'},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
+    ] :
+    m.includes('academic') ? [
+      {label:'Objek '+submenu,kind:'text',required:true},{label:'Peserta / cohort',kind:'text',required:true},
+      {label:'Program / kurikulum',kind:'text',required:true},{label:'Kompetensi / capaian',kind:'textarea'},
+      {label:'Periode akademik',kind:'text',required:true},{label:'Evidence pembelajaran',kind:'text'},
+      {label:'Reviewer / penanggung jawab',kind:'text'},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
+    ] :
+    m.includes('admissions')||m.includes('crm') ? [
+      {label:'Prospek / kontak',kind:'text',required:true},{label:'Sumber lead',kind:'select',options:['Website','Referral','Event','Partner','Other']},
+      {label:'Kebutuhan / intent',kind:'textarea',required:true},{label:'Tahap funnel',kind:'select',required:true,options:spec.lifecycle},
+      {label:'Owner follow-up',kind:'text',required:true},{label:'Next action',kind:'textarea',required:true},
+      {label:'Tanggal follow-up',kind:'date'},{label:'Catatan CRM',kind:'textarea'}
+    ] :
+    m.includes('finance') ? [
+      {label:'Referensi transaksi',kind:'text',required:true},{label:'Pihak terkait',kind:'text',required:true},
+      {label:'Jenis transaksi',kind:'select',options:['Invoice','Payment','Refund','Payout','Adjustment']},{label:'Nilai transaksi',kind:'number',required:true},
+      {label:'Tanggal transaksi',kind:'date',required:true},{label:'Metode / rekening',kind:'text'},
+      {label:'Bukti transaksi',kind:'text',required:true},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
+    ] :
+    m.includes('accounting') ? [
+      {label:'Nomor jurnal',kind:'text',required:true},{label:'Tanggal jurnal',kind:'date',required:true},
+      {label:'Periode akuntansi',kind:'text',required:true},{label:'Akun / COA',kind:'text',required:true},
+      {label:'Debit',kind:'number'},{label:'Kredit',kind:'number'},{label:'Referensi / evidence',kind:'text'},
+      {label:'Status posting',kind:'select',required:true,options:spec.lifecycle}
+    ] :
+    m.includes('compliance')||m.includes('kepatuhan') ? [
+      {label:'Kontrol / requirement',kind:'text',required:true},{label:'Standar / regulasi',kind:'text',required:true},
+      {label:'Owner kontrol',kind:'text',required:true},{label:'Evidence kepatuhan',kind:'text',required:true},
+      {label:'Temuan / gap',kind:'textarea'},{label:'Risk rating',kind:'select',options:['Low','Medium','High','Critical']},
+      {label:'Tanggal review',kind:'date',required:true},{label:'Status kontrol',kind:'select',required:true,options:spec.lifecycle}
+    ] :
+    m.includes('ai')||m.includes('eduhost') ? [
+      {label:'AI workflow / capability',kind:'text',required:true},{label:'Context source',kind:'text',required:true},
+      {label:'Instruction / policy',kind:'textarea',required:true},{label:'Model / provider',kind:'text'},
+      {label:'Validation rule',kind:'textarea',required:true},{label:'Human review gate',kind:'select',options:['Required','Conditional','Not required']},
+      {label:'Audit reference',kind:'text'},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
+    ] : [
+      {label:'Objek '+submenu,kind:'text',required:true},{label:'Konteks '+submenu,kind:'textarea',required:true},
+      {label:'Scope / relasi '+spec.relations[0],kind:'text',required:true},{label:'Owner / accountable',kind:'text',required:true},
+      {label:'Evidence / sumber',kind:'text'},{label:'Tanggal / periode',kind:'date'},
+      {label:'Catatan / keputusan',kind:'textarea'},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
+    ];
+  const semantic = commonByDomain.map((f,i)=>({...f,help:'Field operasional '+entity+' · '+submenu}));
+  return semantic;
+}
+
 function getRegulatoryFormSpec(module:string,submenu:string,spec:AdminDomainSpec,action=''):RegulatoryFormSpec{
   const key=(module+'|'+submenu+(action?'|'+action:'' )).toLowerCase();
-  const fallback:RegulatoryField[]=spec.fields.map((label,i)=>({
-    label,
-    kind:/status|type|level|approval|verification/i.test(label)?'select':/tanggal|mulai|selesai|date|periode/i.test(label)?'date':/catatan|detail|alasan|evidence|review/i.test(label)?'textarea':'text',
-    required:i<2,
-    options:/status/i.test(label)?spec.lifecycle:undefined
-  }));
+  const fallback:RegulatoryField[]=buildDynamicAdminFields(module,submenu,spec);
   const common={standard:'Kerangka Standar Nasional Pendidikan',basis:['PP 57/2021 jo. PP 4/2022'],scope:'Form ini adalah instrumen operasional Education OS; penerapan hukumnya tetap mengikuti jenis, jenjang, jalur, dan status satuan pendidikan.'};
   if(key==='executive overview|executive dashboard|tinjau exception') return {...common,standard:'Standar Pengelolaan — pengawasan, evaluasi, dan tindak lanjut',basis:['Permendikbudristek 47/2023','Permendikdasmen 1/2026'],fields:[
     {label:'Exception ID',kind:'text',required:true},{label:'KPI / indikator pemicu',kind:'text',required:true},{label:'Periode pengukuran',kind:'text',required:true},{label:'Area keputusan',kind:'select',required:true,options:['Academic','Admissions & CRM','Finance','Accounting','Compliance','People & Operations']},
