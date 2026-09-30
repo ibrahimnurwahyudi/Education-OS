@@ -5,6 +5,6 @@
 html{scroll-behavior:smooth}
 body{margin:0;min-width:320px;background:#020617}
 button,a{-webkit-tap-highlight-color:transparent}
-.field{width:100%;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.025);border-radius:.75rem;padding:.65rem .75rem;color:#e2e8f0;font-size:.75rem;outline:none}
+.field{width:100%;border:1px solid rgba(148,163,184,.28);background:#0b1220;border-radius:.75rem;padding:.65rem .75rem;color:#f8fafc;font-size:.75rem;outline:none;color-scheme:dark}.field option,.field optgroup{background:#0b1220;color:#f8fafc}.field option:checked{background:#164e63;color:#fff}
 .field:focus{border-color:rgba(103,232,249,.4);box-shadow:0 0 0 3px rgba(34,211,238,.05)}
 textarea.field{resize:vertical}
