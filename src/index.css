@@ -27,3 +27,46 @@ textarea.field{resize:vertical}
 .materio-workspace .eo-badge{border-radius:.375rem!important;font-weight:600!important;background:#ebeefb!important;color:#5661b3!important;border:0!important}
 .materio-workspace .eo-section{background:#fff!important;border:1px solid var(--eo-border)!important;border-radius:.75rem!important;box-shadow:0 .125rem .25rem rgba(67,89,113,.05)!important}
 @media(max-width:768px){.materio-workspace{padding:.75rem;border-radius:.75rem}.materio-workspace .eo-table{overflow-x:auto}}
+
+
+/* Materio UI adaptation — sourced from the uploaded Materio Bootstrap admin template.
+   Education OS keeps its own domain model and workflow; these classes provide the visual system. */
+.materio-admin{--m-primary:#696cff;--m-primary-soft:#eef0ff;--m-bg:#f5f5f9;--m-paper:#fff;--m-text:#384551;--m-muted:#8592a3;--m-border:#e7e7ef;background:var(--m-bg);color:var(--m-text);border-radius:1rem;min-height:calc(100vh - 110px);padding:1rem}
+.materio-admin *{box-sizing:border-box}
+.materio-admin .m-card{background:var(--m-paper);border:0;border-radius:.75rem;box-shadow:0 .125rem .25rem rgba(67,89,113,.08)}
+.materio-admin .m-topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.15rem;margin-bottom:1rem;background:#fff;border-radius:.75rem;box-shadow:0 .125rem .25rem rgba(67,89,113,.08)}
+.materio-admin .m-eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--m-muted);font-weight:600}
+.materio-admin .m-title{color:var(--m-text);font-size:1.25rem;font-weight:700;margin-top:.2rem}
+.materio-admin .m-subtitle{color:var(--m-muted);font-size:.78rem;line-height:1.55}
+.materio-admin .m-primary{background:var(--m-primary);color:#fff;border:1px solid var(--m-primary);border-radius:.375rem;padding:.62rem .9rem;font-size:.75rem;font-weight:600}
+.materio-admin .m-outline{background:#fff;color:var(--m-text);border:1px solid var(--m-border);border-radius:.375rem;padding:.58rem .8rem;font-size:.75rem}
+.materio-admin .m-sidebar{background:#fff;border-radius:.75rem;padding:.75rem;box-shadow:0 .125rem .25rem rgba(67,89,113,.08)}
+.materio-admin .m-nav-item{display:flex;align-items:center;gap:.65rem;width:100%;padding:.65rem .7rem;border-radius:.375rem;color:#566170;font-size:.75rem;text-align:left}
+.materio-admin .m-nav-item:hover{background:#f4f4f7}
+.materio-admin .m-nav-item.active{background:var(--m-primary-soft);color:var(--m-primary);font-weight:600}
+.materio-admin .m-section-label{padding:.8rem .7rem .4rem;font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:#a1acb8;font-weight:700}
+.materio-admin .m-kpi{padding:1rem 1.1rem}
+.materio-admin .m-kpi-label{font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--m-muted);font-weight:600}
+.materio-admin .m-kpi-value{font-size:1.45rem;font-weight:700;color:var(--m-text);margin-top:.35rem}
+.materio-admin .m-kpi-note{font-size:.68rem;color:var(--m-muted);margin-top:.25rem}
+.materio-admin .m-table{overflow:hidden}
+.materio-admin .m-table-scroll{overflow-x:auto}
+.materio-admin table{width:100%;border-collapse:collapse;min-width:760px}
+.materio-admin th{background:#fafafa;color:#8592a3;font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;text-align:left;font-weight:600;padding:.8rem 1rem;border-bottom:1px solid #ececf2;white-space:nowrap}
+.materio-admin td{padding:.85rem 1rem;border-bottom:1px solid #f0f0f4;color:#566170;font-size:.76rem;vertical-align:middle}
+.materio-admin tr:hover td{background:#fbfbfd}
+.materio-admin .m-status{display:inline-flex;border-radius:.375rem;padding:.25rem .5rem;background:#eef0ff;color:#5963bd;font-size:.64rem;font-weight:600;white-space:nowrap}
+.materio-admin .m-status.success{background:#e8faf1;color:#2e8b62}.materio-admin .m-status.warning{background:#fff5df;color:#b7791f}.materio-admin .m-status.danger{background:#ffe9ec;color:#c73d50}
+.materio-admin .m-input{width:100%;padding:.68rem .8rem;border:1px solid #dfe1e7;border-radius:.375rem;background:#fff;color:var(--m-text);font-size:.78rem;outline:none}
+.materio-admin .m-input:focus{border-color:#a8acff;box-shadow:0 0 0 .18rem rgba(105,108,255,.1)}
+.materio-admin .m-label{display:block;margin-bottom:.38rem;font-size:.67rem;font-weight:600;color:#566170}
+.materio-admin .m-help{margin-top:.3rem;font-size:.64rem;line-height:1.45;color:#a1acb8}
+.materio-admin .m-tabs{display:flex;gap:.35rem;overflow-x:auto;padding:.25rem;background:#f1f1f5;border-radius:.5rem}
+.materio-admin .m-tab{border:0;background:transparent;color:#8592a3;border-radius:.375rem;padding:.55rem .75rem;font-size:.7rem;white-space:nowrap}
+.materio-admin .m-tab.active{background:#fff;color:var(--m-primary);box-shadow:0 .1rem .2rem rgba(67,89,113,.08);font-weight:600}
+.materio-admin .m-detail{background:#fff;border-radius:.75rem;padding:1.1rem;box-shadow:0 .125rem .25rem rgba(67,89,113,.06)}
+.materio-admin .m-detail dt{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:#a1acb8}.materio-admin .m-detail dd{margin:.25rem 0 0;color:#566170;font-size:.78rem}
+.materio-admin .m-chip{display:inline-flex;align-items:center;border:1px solid #e1e3ea;border-radius:.375rem;padding:.28rem .5rem;color:#687386;background:#fff;font-size:.64rem}
+.materio-admin .m-modal{position:fixed;inset:0;z-index:60;background:rgba(35,39,53,.45);display:grid;place-items:center;padding:1rem}
+.materio-admin .m-modal-card{width:min(980px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:.75rem;box-shadow:0 1rem 3rem rgba(35,39,53,.2)}
+@media(max-width:900px){.materio-admin{padding:.65rem}.materio-admin .m-sidebar{display:none}.materio-admin .m-topbar{align-items:flex-start;flex-direction:column}.materio-admin .m-card{border-radius:.65rem}}
