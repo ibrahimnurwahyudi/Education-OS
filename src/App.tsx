@@ -290,12 +290,77 @@ function AdminMaterioShell({session,role,config,module,activeSub,setSubmenu,setS
     {aiOpen&&<AiPanel role={role} module={module.name} submenu={activeSub} messages={aiMessages} input={aiInput} setInput={setAiInput} onSend={()=>runAi(aiInput)} onClose={()=>setAiOpen(false)}/>} 
   </div>
 }
+function PublicEducationWebsite({onLogin}:{onLogin:()=>void}){
+  const programs=[
+    {title:'Learning Programs',text:'Program belajar terstruktur dengan tujuan, kurikulum, sesi, asesmen, dan evidence.',icon:BookOpen},
+    {title:'Mentor & Private Tutoring',text:'Temukan mentor, atur jadwal, jalankan sesi, dan pantau perkembangan berbasis evidence.',icon:Users},
+    {title:'OSN Academy',text:'Pembinaan kompetisi dengan diagnostic, problem set, simulasi, review solusi, dan training path.',icon:Award},
+  ];
+  const steps=[
+    ['01','Assess','Mulai dari diagnostic dan tujuan belajar yang jelas.'],
+    ['02','Learn','Belajar melalui program, mentor, latihan, dan sesi terarah.'],
+    ['03','Measure','Setiap perkembangan ditautkan ke assessment dan evidence.'],
+    ['04','Improve','Gunakan feedback dan intervensi untuk menentukan langkah berikutnya.'],
+  ];
+  return <div className="min-h-screen bg-[#f7f9fc] text-slate-900">
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+        <a href="#home" className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-slate-950 text-white"><GraduationCap size={21}/></div>
+          <div><div className="text-sm font-extrabold tracking-[.16em]">EDUCATION OS</div><div className="text-[10px] font-medium text-slate-500">Learning · Mentorship · Achievement</div></div>
+        </a>
+        <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 lg:flex">
+          <a href="#programs" className="hover:text-slate-950">Program</a>
+          <a href="#how" className="hover:text-slate-950">Cara Kerja</a>
+          <a href="#mentors" className="hover:text-slate-950">Mentor</a>
+          <a href="#osn" className="hover:text-slate-950">OSN Academy</a>
+          <a href="#institutions" className="hover:text-slate-950">Institusi</a>
+        </nav>
+        <div className="flex items-center gap-2">
+          <button onClick={onLogin} className="hidden rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 sm:block">Masuk</button>
+          <button onClick={onLogin} className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/10 hover:bg-slate-800">Mulai Belajar</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section id="home" className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(56,189,248,.18),transparent_35%),radial-gradient(circle_at_15%_20%,rgba(99,102,241,.12),transparent_30%)]"/>
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-16 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-28 lg:pt-24">
+          <div className="flex flex-col justify-center">
+            <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm"><Sparkles size={13}/> A complete operating system for learning</div>
+            <h1 className="max-w-4xl text-5xl font-black leading-[1.02] tracking-[-.045em] sm:text-6xl lg:text-7xl">Belajar lebih terarah. <span className="text-slate-500">Berkembang dengan evidence.</span></h1>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">Education OS menyatukan learning, mentorship, assessment, achievement, dan operasi pendidikan dalam satu ekosistem yang terhubung.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><button onClick={onLogin} className="rounded-2xl bg-slate-950 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-slate-950/15">Masuk ke Education OS <ChevronRight className="ml-1 inline" size={16}/></button><a href="#programs" className="rounded-2xl border border-slate-300 bg-white px-6 py-3.5 text-center text-sm font-bold text-slate-700">Jelajahi program</a></div>
+            <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-xs font-semibold text-slate-500"><span>Evidence-first</span><span>Human mentor accountable</span><span>AI copilot</span><span>Secure by design</span></div>
+          </div>
+          <div className="relative flex items-center justify-center">
+            <div className="w-full max-w-xl rounded-[2rem] border border-slate-200 bg-white p-4 shadow-2xl shadow-slate-900/10">
+              <div className="rounded-[1.5rem] bg-slate-950 p-5 text-white">
+                <div className="flex items-center justify-between"><div><div className="text-[10px] uppercase tracking-[.2em] text-slate-400">Learning cockpit</div><div className="mt-1 text-xl font-bold">Your learning path</div></div><div className="rounded-xl bg-white/10 p-2"><Target size={18}/></div></div>
+                <div className="mt-6 grid grid-cols-3 gap-2">{[['Goal','Limit Functions'],['Mentor','Dr. Aditya'],['Evidence','24 artifacts']].map(([a,b])=><div key={a} className="rounded-2xl border border-white/10 bg-white/[.05] p-3"><div className="text-[10px] text-slate-400">{a}</div><div className="mt-1 text-xs font-semibold">{b}</div></div>)}</div>
+                <div className="mt-3 rounded-2xl border border-white/10 bg-white/[.05] p-4"><div className="flex items-center justify-between text-xs"><span className="text-slate-400">Learning evidence</span><span className="font-bold">24</span></div><div className="mt-3 h-2 rounded-full bg-white/10"><div className="h-2 w-[72%] rounded-full bg-cyan-300"/></div><div className="mt-3 flex justify-between text-[10px] text-slate-500"><span>Diagnostic</span><span>Practice</span><span>Assessment</span><span>Review</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="programs" className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="max-w-2xl"><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">One connected ecosystem</div><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Satu tempat untuk seluruh perjalanan belajar.</h2><p className="mt-4 text-slate-600">Bukan sekadar halaman kursus. Setiap program memiliki struktur, aktivitas, evidence, dan tindak lanjut.</p></div><div className="mt-10 grid gap-5 md:grid-cols-3">{programs.map(({title,text:copy,icon:Icon})=><article key={title} className="group rounded-3xl border border-slate-200 bg-[#fbfcfe] p-6 transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"><div className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-950 text-white"><Icon size={21}/></div><h3 className="mt-6 text-xl font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{copy}</p><button onClick={onLogin} className="mt-6 text-sm font-bold text-slate-950">Explore <ChevronRight className="inline" size={15}/></button></article>)}</div></div></section>
+      <section id="how" className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">How it works</div><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Perjalanan belajar yang bisa ditelusuri.</h2><p className="mt-4 text-slate-600">Education OS mengubah aktivitas belajar menjadi alur yang dapat dipahami siswa, orang tua, mentor, dan institusi.</p></div><div className="grid gap-3 sm:grid-cols-2">{steps.map(([num,title,copy])=><div key={num} className="rounded-3xl border border-slate-200 bg-white p-6"><div className="text-xs font-black text-slate-400">{num}</div><h3 className="mt-4 text-lg font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p></div>)}</div></div></section>
+      <section id="mentors" className="bg-slate-950 text-white"><div className="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-2 lg:px-8"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-400">Mentor network</div><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Mentor bukan sekadar profil. Mereka bagian dari learning workflow.</h2><p className="mt-5 max-w-xl leading-7 text-slate-400">Availability, session, assessment, feedback, report, dan review terhubung dalam satu ruang kerja mentor.</p><button onClick={onLogin} className="mt-8 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-slate-950">Masuk ke ruang mentor</button></div><div className="grid gap-3 sm:grid-cols-2"><div className="rounded-3xl border border-white/10 bg-white/[.04] p-5"><Users size={20}/><div className="mt-6 font-bold">Mentor Marketplace</div><div className="mt-2 text-sm leading-6 text-slate-400">Discovery, verification, availability, matching, dan assignment.</div></div><div className="rounded-3xl border border-white/10 bg-white/[.04] p-5"><FileCheck2 size={20}/><div className="mt-6 font-bold">Evidence & reporting</div><div className="mt-2 text-sm leading-6 text-slate-400">Assessment dan laporan tidak dipisahkan dari bukti yang mendasarinya.</div></div></div></div></section>
+      <section id="osn" className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm sm:p-10"><div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">OSN Academy</div><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Training kompetitif dengan jalur yang jelas.</h2><p className="mt-4 max-w-2xl text-slate-600">Diagnostic → problem set → simulation → solution review → intervention → competition preparation.</p></div><button onClick={onLogin} className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-bold text-white">Buka OSN Academy</button></div><div className="mt-8 grid gap-3 sm:grid-cols-5">{['Diagnostic','Problem Set','Simulation','Review','Training Camp'].map((x,i)=><div key={x} className="rounded-2xl border border-slate-200 p-4"><div className="text-xs font-bold text-slate-400">0{i+1}</div><div className="mt-3 text-sm font-bold">{x}</div></div>)}</div></div></section>
+      <section id="institutions" className="bg-[#eef2f7]"><div className="mx-auto max-w-7xl px-5 py-20 lg:px-8"><div className="mx-auto max-w-3xl text-center"><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-500">For institutions</div><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Education operations yang terhubung dengan pembelajaran.</h2><p className="mt-4 text-slate-600">Academic ERP, CRM, finance, accounting, compliance, audit, people, dan learning intelligence berada dalam satu operating model.</p><button onClick={onLogin} className="mt-7 rounded-2xl bg-slate-950 px-6 py-3.5 text-sm font-bold text-white">Masuk ke Institution Workspace</button></div></div></section>
+      <section className="bg-white"><div className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><div className="flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-slate-950 p-8 text-white sm:p-10 lg:flex-row lg:items-center"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-slate-400">Education OS</div><h2 className="mt-2 text-2xl font-black sm:text-3xl">Mulai dari ruang belajar Anda.</h2></div><button onClick={onLogin} className="rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-slate-950">Masuk / Mulai</button></div></div></section>
+    </main>
+    <footer className="border-t border-slate-200 bg-white"><div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8"><div>© 2026 Education OS</div><div>Learning · Mentorship · Achievement · Operations</div></div></footer>
+  </div>
+}
+
 function App(){
-const [session,setSession]=useState<DemoSession|null>(null);
+const [session,setSession]=useState<DemoSession|null>(null);\nconst [showPublicSite,setShowPublicSite]=useState(true);
 const [,setDataVersion]=useState(0);
 useEffect(()=>{const handler=()=>setDataVersion(v=>v+1);window.addEventListener('education-os-data-changed',handler);return()=>window.removeEventListener('education-os-data-changed',handler)},[]);
 const [role,setRole]=useState<Role>('Siswa'),[moduleName,setModuleName]=useState('Beranda Belajar'),[submenu,setSubmenu]=useState('Ringkasan Belajar'),[record,setRecord]=useState<RecordItem|null>(null),[formOpen,setFormOpen]=useState(false),[formType,setFormType]=useState(''),[mobile,setMobile]=useState(false),[switcher,setSwitcher]=useState(false),[aiOpen,setAiOpen]=useState(false),[reportOpen,setReportOpen]=useState(false),[aiInput,setAiInput]=useState(''),[aiMessages,setAiMessages]=useState<string[]>(['Halo. Saya EDUHOST, Live Companion Education OS. Saya dapat membantu menavigasi workspace, menyiapkan pekerjaan, dan menjelaskan konteks yang tersedia.']);
-if(!session)return <LoginScreen onLogin={account=>{setSession(account);setRole(account.role==='Administrator'?'Institusi':account.role);setModuleName(account.role==='Administrator'?adminConfig.modules[0].name:roleConfigs[account.role].modules[0].name);setSubmenu(account.role==='Administrator'?adminConfig.modules[0].submenus[0]:roleConfigs[account.role].modules[0].submenus[0]);}}/>;
+if(!session)return showPublicSite?<PublicEducationWebsite onLogin={()=>setShowPublicSite(false)}/>:<LoginScreen onLogin={account=>{setSession(account);setRole(account.role==='Administrator'?'Institusi':account.role);setModuleName(account.role==='Administrator'?adminConfig.modules[0].name:roleConfigs[account.role].modules[0].name);setSubmenu(account.role==='Administrator'?adminConfig.modules[0].submenus[0]:roleConfigs[account.role].modules[0].submenus[0]);}}/>;
 const isAdmin=session.role==='Administrator';
 const config=isAdmin?adminConfig:roleConfigs[role],module=config.modules.find(m=>m.name===moduleName)||config.modules[0],activeSub=module.submenus.includes(submenu)?submenu:module.submenus[0];
 const records=isAdmin?buildAdminRecords(module.name,activeSub):buildPersonalRecords(session,module.name,activeSub);
