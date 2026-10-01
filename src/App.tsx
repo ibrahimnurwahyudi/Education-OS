@@ -1420,8 +1420,9 @@ function FormModal({type,role,module,submenu,personId,onClose}:{type:string;role
     const required=moduleKey.includes('keuangan')||moduleKey.includes('finance')||moduleKey.includes('accounting')?'finance.manage':moduleKey.includes('crm')||moduleKey.includes('admissions')?'crm.manage':moduleKey.includes('osn')?'osn.manage':moduleKey.includes('tata kelola')||moduleKey.includes('governance')||moduleKey.includes('system administration')?'governance.manage':moduleKey.includes('asesmen')||moduleKey.includes('assessment')?'assessment.manage':moduleKey.includes('evidence')||moduleKey.includes('portofolio')?'evidence.manage':moduleKey.includes('academic')||moduleKey.includes('akademik')||moduleKey.includes('pembelajaran')?'academic.manage':role==='Siswa'?'profile.edit':'academic.manage';
     if(!hasPermission(role,required as any)){window.alert('Akses ditolak. Role '+role+' tidak memiliki permission '+required+' untuk tindakan ini.');return}
     if(!String(values[first]||'').trim()){window.alert('Lengkapi field utama '+first+' sebelum menyimpan.');return}
-    if(personId.startsWith('ORG-')||personId.startsWith('STU-')||personId.startsWith('PAR-')||personId.startsWith('MTR-')||personId.startsWith('OSN-')){
-      window.alert('Mode demo menyimpan data lokal. Akun Supabase produksi menggunakan scope RLS dan akan diarahkan ke persistence database pada workflow berikutnya.');
+    if(/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(personId)){
+      window.alert('Akun produksi terautentikasi melalui Supabase. Form ini tidak menulis data ke localStorage; persistence database akan memakai RLS scope pada workflow berikutnya.');
+      return;
     }
     const status=values['Status']||values['Status saat ini']||stage||detail.lifecycle[0]||'Draft';
     const record:RecordItem={id:personId+'-'+Date.now().toString(36),title:values[first]||typeText,meta:values[fields[1]]||module+' · '+submenu,status,detail:Object.entries(values).filter(([k,v])=>k!==first&&v).map(([k,v])=>k+': '+v).join(' · ')||ctx.help,data:{...values}};
