@@ -63,7 +63,7 @@ export async function saveParentDetails(token:string,applicationId:string,payloa
   return rest('parent_registration_profiles',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)});
 }
 export async function saveMentorApplication(token:string,applicationId:string,input:Record<string,unknown>){
-  const row={registration_application_id:applicationId,user_id:input.user_id,status:'pending',credentials:{},bio:String(input.bio||''),submitted_at:new Date().toISOString(),...input};
+  const row={registration_application_id:applicationId,user_id:input.user_id,status:'pending',credentials:{cv:input.credentials?.cv||'',supporting:input.credentials?.supporting||[]},bio:String(input.bio||''),submitted_at:new Date().toISOString(),...input,specializations:input.specializations?String(input.specializations).split(',').map(x=>x.trim()).filter(Boolean):[],availability:{raw:String(input.availability||'')},salary_expectation_cents:input.salary_expectation?Number(String(input.salary_expectation).replace(/[^0-9]/g,''))||null:null};
   return rest('mentor_applications',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(row)});
 }
 export async function uploadApplicationFile(token:string,applicationId:string,userId:string,file:File){
