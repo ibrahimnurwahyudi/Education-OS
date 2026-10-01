@@ -11,9 +11,11 @@ async function auth(path:string,body:Record<string,unknown>){
   return json;
 }
 export async function signUpRegistration(email:string,password:string,role:RegistrationRole,fullName:string,phone:string,payload:RegistrationPayload){
-  return auth('signup',{email,password,options:{data:{education_role:role,full_name:fullName,registration_payload:payload}}});
+  return auth('signup',{email,password,options:{data:{education_role:role,full_name:fullName,phone,registration_payload:payload}}});
 }
-export function startGoogleAuth(){
+export function startGoogleAuth(role?:RegistrationRole){
+  if(role) localStorage.setItem('education-os-google-registration-role',role);
+  else localStorage.removeItem('education-os-google-registration-role');
   const redirectTo=window.location.origin+window.location.pathname;
   window.location.href=SUPABASE_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(redirectTo);
 }
@@ -80,4 +82,7 @@ export async function saveApplicationDocument(token:string,input:Record<string,u
 
 export async function prepareRegistrationBilling(token:string,applicationId:string){
   return rest('rpc/prepare_registration_billing',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
+}
+export async function approveMentorApplication(token:string,applicationId:string){
+  return rest('rpc/approve_mentor_application',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
 }
