@@ -8,3 +8,22 @@ button,a{-webkit-tap-highlight-color:transparent}
 .field{width:100%;border:1px solid rgba(148,163,184,.28);background:#0b1220;border-radius:.75rem;padding:.65rem .75rem;color:#f8fafc;font-size:.75rem;outline:none;color-scheme:dark}.field option,.field optgroup{background:#0b1220;color:#f8fafc}.field option:checked{background:#164e63;color:#fff}
 .field:focus{border-color:rgba(103,232,249,.4);box-shadow:0 0 0 3px rgba(34,211,238,.05)}
 textarea.field{resize:vertical}
+
+/* Education OS — Materio-inspired enterprise administration layer */
+.materio-workspace{--eo-primary:#696cff;--eo-bg:#f5f5f9;--eo-card:#fff;--eo-text:#384551;--eo-muted:#8592a3;--eo-border:#e7e7ef;color:var(--eo-text)!important;background:var(--eo-bg)!important;border-radius:1rem;padding:1.25rem;min-height:calc(100vh - 120px)}
+.materio-workspace .eo-card{background:var(--eo-card)!important;border:1px solid var(--eo-border)!important;border-radius:.75rem!important;box-shadow:0 .125rem .25rem rgba(67,89,113,.08)!important}
+.materio-workspace h1,.materio-workspace h2,.materio-workspace h3,.materio-workspace h4,.materio-workspace h5,.materio-workspace h6{color:var(--eo-text)!important}
+.materio-workspace .eo-muted{color:var(--eo-muted)!important}
+.materio-workspace input,.materio-workspace select,.materio-workspace textarea,.materio-workspace .field{background:#fff!important;color:var(--eo-text)!important;border:1px solid var(--eo-border)!important;border-radius:.375rem!important}
+.materio-workspace input::placeholder,.materio-workspace textarea::placeholder{color:#a1acb8!important}
+.materio-workspace .eo-primary{background:var(--eo-primary)!important;color:#fff!important;border-color:var(--eo-primary)!important}
+.materio-workspace .eo-outline{background:#fff!important;color:var(--eo-text)!important;border:1px solid var(--eo-border)!important}
+.materio-workspace .eo-kpi{background:#fff!important;border:1px solid var(--eo-border)!important;border-radius:.75rem!important;box-shadow:0 .125rem .25rem rgba(67,89,113,.06)!important}
+.materio-workspace .eo-kpi-label{color:var(--eo-muted)!important;text-transform:uppercase;letter-spacing:.06em;font-size:.68rem}
+.materio-workspace .eo-table{background:#fff!important;border:1px solid var(--eo-border)!important;border-radius:.75rem!important;overflow:hidden;box-shadow:0 .125rem .25rem rgba(67,89,113,.06)!important}
+.materio-workspace .eo-table-head{background:#fafafa!important;color:var(--eo-muted)!important;border-bottom:1px solid var(--eo-border)!important}
+.materio-workspace .eo-table-row{border-bottom:1px solid #f0f0f4!important;background:#fff!important}
+.materio-workspace .eo-table-row:hover{background:#fafaff!important}
+.materio-workspace .eo-badge{border-radius:.375rem!important;font-weight:600!important;background:#ebeefb!important;color:#5661b3!important;border:0!important}
+.materio-workspace .eo-section{background:#fff!important;border:1px solid var(--eo-border)!important;border-radius:.75rem!important;box-shadow:0 .125rem .25rem rgba(67,89,113,.05)!important}
+@media(max-width:768px){.materio-workspace{padding:.75rem;border-radius:.75rem}.materio-workspace .eo-table{overflow-x:auto}}
