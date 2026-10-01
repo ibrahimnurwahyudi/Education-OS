@@ -356,7 +356,8 @@ function PublicEducationWebsite({onLogin}:{onLogin:()=>void}){
 }
 
 function App(){
-const [session,setSession]=useState<DemoSession|null>(null);\nconst [showPublicSite,setShowPublicSite]=useState(true);
+const [session,setSession]=useState<DemoSession|null>(null);
+const [showPublicSite,setShowPublicSite]=useState(true);
 const [,setDataVersion]=useState(0);
 useEffect(()=>{const handler=()=>setDataVersion(v=>v+1);window.addEventListener('education-os-data-changed',handler);return()=>window.removeEventListener('education-os-data-changed',handler)},[]);
 const [role,setRole]=useState<Role>('Siswa'),[moduleName,setModuleName]=useState('Beranda Belajar'),[submenu,setSubmenu]=useState('Ringkasan Belajar'),[record,setRecord]=useState<RecordItem|null>(null),[formOpen,setFormOpen]=useState(false),[formType,setFormType]=useState(''),[mobile,setMobile]=useState(false),[switcher,setSwitcher]=useState(false),[aiOpen,setAiOpen]=useState(false),[reportOpen,setReportOpen]=useState(false),[aiInput,setAiInput]=useState(''),[aiMessages,setAiMessages]=useState<string[]>(['Halo. Saya EDUHOST, Live Companion Education OS. Saya dapat membantu menavigasi workspace, menyiapkan pekerjaan, dan menjelaskan konteks yang tersedia.']);
