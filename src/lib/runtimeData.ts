@@ -4,7 +4,7 @@ export type RuntimeRole='Siswa'|'Orang Tua'|'Mentor'|'Mentor OSN'|'Institusi'|'A
 export type RuntimeIdentity={role:RuntimeRole;personId:string;organizationId:string;accessToken:string};
 export type RuntimeRecord={id:string;title:string;meta:string;status:string;detail:string};
 async function get(path:string,token:string){const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+token}});if(!r.ok)throw new Error('Data API '+r.status);return r.json();}
-async function profiles(ids:string[],token:string){if(!ids.length)return [];return get('profiles?select=id,display_name,avatar_url& id=in.('+ids.map(encodeURIComponent).join(',')+')'.replace(' ','') ,token);}
+async function profiles(ids:string[],token:string){if(!ids.length)return [];return get('profiles?select=id,display_name,avatar_url&id=in.('+ids.map(encodeURIComponent).join(',')+')'.replace(' ','') ,token);}
 export async function loadScopedStudents(identity:RuntimeIdentity,submenu:string):Promise<RuntimeRecord[]>{
  if(identity.role==='Administrator')return [];
  let students:any[]=[];
