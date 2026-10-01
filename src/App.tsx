@@ -1192,7 +1192,21 @@ function getSemanticFormContext(module:string,submenu:string){
   if(s.includes('asesmen')||s.includes('diagnostik')||s.includes('formatif')||s.includes('sumatif'))return {title:submenu+' · Assessment Record',fields:['Assessment ID','Peserta / cohort','Kompetensi','Instrumen','Rubrik','Periode','Reviewer','Status asesmen'],selects:{'Status asesmen':['Draft','Published','In Progress','Review','Finalized']},help:'Record asesmen dipisahkan dari hasil, evidence, dan keputusan tindak lanjut.'};
   if(s.includes('kompetensi'))return {title:submenu+' · Competency Record',fields:['Competency ID','Kompetensi','Domain','Level target','Evidence pendukung','Assessment source','Reviewer','Status mapping'],selects:{'Status mapping':['Draft','Mapped','Needs Review','Verified']},help:'Kompetensi harus terhubung ke evidence dan sumber asesmen.'};
   if(s.includes('dokumen'))return {title:submenu+' · Document Record',fields:['Document ID','Nama dokumen','Jenis','Pemilik','Versi','Tanggal berlaku','Access scope','Status dokumen'],selects:{'Status dokumen':['Draft','Review','Approved','Archived','Expired']},help:'Dokumen memiliki owner, versioning, access scope, dan lifecycle.'};
-  return {title:submenu+' · Operational Record',fields:[`${submenu} ID`,`Entitas utama ${submenu.toLowerCase()}`,`Konteks operasional ${submenu.toLowerCase()}`,`Penanggung jawab ${submenu.toLowerCase()}`,`Tanggal berlaku`,`Evidence sumber`,`Reviewer`,`Status lifecycle`],selects:{'Lifecycle status':['Draft','In Review','Active','Completed','Archived']},help:''};
+  // Reuse the submenu's domain DetailSpec instead of a generic Operational Record.
+  const detail = getDetailSpec(module,submenu);
+  const detailFields = Array.isArray(detail.fields) ? detail.fields.filter(Boolean) : [];
+  if(detailFields.length){
+    const selects:Record<string,string[]>={};
+    detailFields.forEach(field=>{
+      const l=field.toLowerCase();
+      if(l.includes('status')) selects[field]=l.includes('verifikasi')?['Belum diverifikasi','Direview','Terverifikasi']:l.includes('kehadiran')?['Belum hadir','Hadir','Terlambat','Izin','Tidak hadir']:l.includes('asesmen')?['Draft','Published','In Progress','Review','Finalized']:l.includes('enrollment')?['Prospek','Trial','Aktif','Paused','Selesai']:['Draft','In Review','Aktif','Selesai','Diarsipkan'];
+      else if(l.includes('mode')) selects[field]=['Online','Offline','Hybrid'];
+      else if(l.includes('jenis')||l.includes('tipe')) selects[field]=['Modul','Video','Dokumen','Latihan','Asesmen','Observasi'];
+    });
+    return {title:detail.primary||submenu,fields:detailFields,selects,help:'Workspace operasional '+submenu+' menggunakan schema domain dari definisi submenu dan evidence yang dapat ditelusuri.'};
+  }
+  const noun=submenu.replace(/^(Beranda|Ruang|Daftar)\s+/i,'').trim();
+  return {title:noun+' · Workspace',fields:[noun+' utama','Konteks '+noun,'Status '+noun,'Tanggal / periode '+noun,'Evidence '+noun,'Catatan '+noun],selects:{['Status '+noun]:['Draft','Perlu Review','Aktif','Selesai','Diarsipkan']},help:'Schema khusus untuk '+submenu+'. Setiap record harus dapat ditelusuri ke konteks, evidence, dan status operasionalnya.'};
 }
 
 function getFormContext(module:string,submenu:string,type:string){const rawType=type.toLowerCase().trim();const actionKey=rawType.includes('·')?rawType.split('·').pop()!.trim():rawType;const key=actionKey;const exact:Record<string,{title:string;fields:string[];selects:Record<string,string[]>;help:string}>={
