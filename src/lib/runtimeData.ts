@@ -33,9 +33,11 @@ export async function loadScopedStudentRecords(identity:Identity){
   }else if(identity.role==='Mentor'||identity.role==='Mentor OSN'){
     const links=await rest('student_mentor_assignments?select=student_id&mentor_id=eq.'+encodeURIComponent(identity.personId)+'&status=eq.active',identity.accessToken) as {student_id:string}[];
     const ids=links.map(x=>x.student_id); if(ids.length) rows=await rest('students?'+base+'&id=in.('+ids.map(encodeURIComponent).join(',')+')',identity.accessToken) as DbStudent[];
-  }else{
+  }else if(identity.role==='Institusi'){
     let query='students?'+base; if(identity.organizationId) query+='&organization_id=eq.'+encodeURIComponent(identity.organizationId);
     rows=await rest(query+'&order=created_at.desc&limit=500',identity.accessToken) as DbStudent[];
+  }else{
+    return [];
   }
   return rows.map(toRecord);
 }
