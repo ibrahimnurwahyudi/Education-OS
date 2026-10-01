@@ -66,6 +66,14 @@ export async function saveMentorApplication(token:string,applicationId:string,in
   const row={registration_application_id:applicationId,user_id:input.user_id,status:'pending',credentials:{},bio:String(input.bio||''),submitted_at:new Date().toISOString(),...input};
   return rest('mentor_applications',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(row)});
 }
+export async function uploadApplicationFile(token:string,applicationId:string,userId:string,file:File){
+  const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path=userId+'/'+applicationId+'/'+Date.now().toString(36)+'-'+safe;
+  const res=await fetch(SUPABASE_URL+'/storage/v1/object/hr-applications/'+encodeURIComponent(path),{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+token,'Content-Type':file.type||'application/octet-stream','x-upsert':'false'},body:file});
+  const json=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(json.message||'Gagal mengunggah dokumen.');
+  return {path,file};
+}
 export async function saveApplicationDocument(token:string,input:Record<string,unknown>){
   return rest('application_documents',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(input)});
 }
