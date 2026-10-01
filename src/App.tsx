@@ -1,6 +1,7 @@
 import { Component,useEffect,useState } from 'react';
 import { restoreIdentity,signInWithPassword,signOut } from './lib/supabaseAuth';
 import IdentityGateway,{GatewayAccount} from './components/IdentityGateway';
+import HRDWorkspace from './components/HRDWorkspace';
 import {captureOAuthSession} from './lib/registration';
 import { loadScopedStudentRecords } from './lib/runtimeData';
 import { Activity,Award,BarChart3,BookOpen,BrainCircuit,CalendarDays,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,FileBarChart,FileCheck2,FileText,GraduationCap,LayoutDashboard,Menu,MessageSquare,Network,NotebookPen,Plus,Search,Settings2,ShieldCheck,Sparkles,Target,Users,WalletCards,X } from 'lucide-react';
@@ -380,6 +381,7 @@ const records=session.production?runtimeRecords:(isAdmin?buildAdminRecords(modul
 function selectRole(r:Role){if(!isAdmin)return;setRole(r);setModuleName(roleConfigs[r].modules[0].name);setSubmenu(roleConfigs[r].modules[0].submenus[0]);setRecord(null);setSwitcher(false);setMobile(false)}
 function selectModule(m:Module){setModuleName(m.name);setSubmenu(m.submenus[0]);setRecord(null);setMobile(false)}
 function runAi(){const q=aiInput.trim();if(!q)return;setAiMessages(v=>[...v,'Anda: '+q,'EDUHOST: Saya memahami konteks '+role+' dan halaman '+module.name+' → '+activeSub+'. Untuk tindakan penting, saya akan meminta konfirmasi sebelum menerapkannya.']);setAiInput('')}
+if(session.role==='HRD')return <HRDWorkspace session={session} onLogout={()=>{void signOut();setSession(null);setRuntimeRecords([])}}/>;
 if(isAdmin)return <AdminMaterioShell session={session} role={role} config={config} module={module} activeSub={activeSub} setSubmenu={setSubmenu} setSwitcher={setSwitcher} setAiOpen={setAiOpen} setSession={setSession} setMobile={setMobile} switcher={switcher} setRole={setRole} setModuleName={setModuleName} setRecord={setRecord} setFormType={setFormType} setFormOpen={setFormOpen} formOpen={formOpen} formType={formType} reportOpen={reportOpen} setReportOpen={setReportOpen} aiOpen={aiOpen} aiInput={aiInput} setAiInput={setAiInput} aiMessages={aiMessages} setAiMessages={setAiMessages}/>;
 const ActiveModuleIcon=module.icon;
 return <div className="materio-shell">
