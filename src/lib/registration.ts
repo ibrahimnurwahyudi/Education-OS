@@ -86,3 +86,7 @@ export async function prepareRegistrationBilling(token:string,applicationId:stri
 export async function approveMentorApplication(token:string,applicationId:string){
   return rest('rpc/approve_mentor_application',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
 }
+
+export async function rejectMentorApplication(token:string,applicationId:string,reason?:string){
+  return rest('rpc/reject_mentor_application',{method:'POST',body:JSON.stringify({p_application_id:applicationId,p_reason:reason||null})});
+}
