@@ -1,0 +1,14 @@
+const WEBSITE_SUPABASE_URL="https://cbuunkkmpwwflxlqypxn.supabase.co";
+const WEBSITE_SUPABASE_KEY="sb_publishable_Jvgq7Mjv2C4qrwDwkCaoMQ_efWLPRPV";
+const api=view=>fetch(WEBSITE_SUPABASE_URL+"/rest/v1/"+view+"?select=*",{headers:{apikey:WEBSITE_SUPABASE_KEY,Authorization:"Bearer "+WEBSITE_SUPABASE_KEY}}).then(r=>{if(!r.ok)throw new Error("Public data unavailable");return r.json()});
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const empty=label=>'<div class="data-empty"><span>PUBLIC DATA</span><strong>'+esc(label)+'</strong><p>Belum ada data yang dipublikasikan dari Education OS.</p></div>';
+const renderData=(id,items,renderer,label)=>{const el=document.getElementById(id);if(!el)return;el.innerHTML=items.length?items.map(renderer).join(""):empty(label)};
+document.addEventListener("DOMContentLoaded",async()=>{
+ const jobs=[];
+ if(document.getElementById("public-programs"))jobs.push(api("website_programs").then(x=>renderData("public-programs",x,(p,i)=>'<article class="content-card '+(i%3===0?"dark-card":"")+'"><b>PROGRAM / '+String(i+1).padStart(2,"0")+'</b><h2>'+esc(p.name)+'</h2><p>'+esc(p.description||"Program pendidikan Education OS.")+'</p><small>DATA: EDUCATION OS</small></article>'),"Program aktif"));
+ if(document.getElementById("public-mentors"))jobs.push(api("website_mentors").then(x=>renderData("public-mentors",x,(m,i)=>'<article class="content-card '+(i%2===0?"dark-card":"")+'"><b>MENTOR / '+String(i+1).padStart(2,"0")+'</b><h2>'+esc(m.display_name||"Mentor Education OS")+'</h2><p><strong>'+esc(m.headline||"Mentor")+'</strong></p><p>'+esc(m.bio||"Profil mentor tersedia melalui Education OS.")+'</p><small>VERIFIED PUBLIC PROFILE</small></article>'),"Mentor terverifikasi"));
+ if(document.getElementById("public-osn"))jobs.push(api("website_osn_tracks").then(x=>renderData("public-osn",x,(t,i)=>'<article class="content-card '+(i%3===1?"dark-card":"")+'"><b>OSN / '+String(i+1).padStart(2,"0")+'</b><h2>'+esc(t.name)+'</h2><p><strong>'+esc(t.discipline||"Bidang pembinaan")+'</strong></p><p>'+esc(t.description||"Jalur pembinaan OSN Education OS.")+'</p><small>ACTIVE TRACK</small></article>'),"Jalur OSN aktif"));
+ if(document.getElementById("public-institutions"))jobs.push(api("website_institutions").then(x=>renderData("public-institutions",x,(i,n)=>'<article class="content-card '+(n%2===0?"dark-card":"")+'"><b>INSTITUTION / '+String(n+1).padStart(2,"0")+'</b><h2>'+esc(i.name)+'</h2><p>'+esc(i.institution_type||"Institusi pendidikan")+' · '+esc([i.city,i.province].filter(Boolean).join(", "))+'</p><p>'+esc(i.email||i.phone||"Kontak publik belum tersedia.")+'</p><small>PUBLIC INSTITUTION PROFILE</small></article>'),"Institusi aktif"));
+ await Promise.allSettled(jobs);
+});
