@@ -752,28 +752,78 @@ function getRegulatoryFormSpec(module:string,submenu:string,spec:AdminDomainSpec
     {label:'Sumber / record asal',kind:'text',required:true},{label:'Deskripsi fakta yang dibuktikan',kind:'textarea',required:true},{label:'Lokasi / referensi dokumen',kind:'text',required:true},{label:'Pemilik evidence',kind:'text',required:true},
     {label:'Verifier',kind:'text',required:true},{label:'Tanggal verifikasi',kind:'date'},{label:'Status verifikasi',kind:'select',required:true,options:['Pending','Verified','Rejected','Expired']},{label:'Catatan reviewer',kind:'textarea'}
   ],validation:['Evidence harus memiliki sumber asal dan periode','Deskripsi harus memisahkan fakta dari interpretasi','Pemilik dan verifier harus dapat dibedakan','Evidence Verified harus memiliki proses verifikasi','Evidence yang expired tidak boleh dipakai sebagai dasar keputusan tanpa peninjauan']};
-  if(key.includes('master data|siswa')) return {...common,standard:'SKL + Standar Isi + Standar Pengelolaan',basis:['Permendikdasmen 10/2025','Permendikdasmen 12/2025','Permendikbudristek 47/2023'],fields:[
-    {label:'Nama lengkap',kind:'text',required:true},{label:'NISN (bila berlaku)',kind:'text'},{label:'Tanggal lahir',kind:'date',required:true},{label:'Jenis kelamin',kind:'select',required:true,options:['Laki-laki','Perempuan','Tidak diisi']},
-    {label:'Jalur / Jenjang / Jenis',kind:'text',required:true,help:'Tentukan konteks pendidikan karena standar dapat berbeda menurut jalur, jenjang, dan jenis.'},{label:'Program / Kelas',kind:'text',required:true},{label:'Orang Tua / Wali',kind:'text',required:true},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
-  ],validation:['Identitas utama wajib','Jalur/jenjang/jenis pendidikan wajib jelas','Relasi wali wajib dapat ditelusuri','Status harus berasal dari lifecycle']};
-  if(key.includes('master data|orang tua / wali')) return {...common,standard:'Standar Pengelolaan + perlindungan relasi layanan pendidikan',basis:['Permendikbudristek 47/2023','PP 57/2021 jo. PP 4/2022'],fields:[
+  if(key.includes('master data|siswa')) return {...common,standard:'SKL + Standar Pengelolaan',basis:['Permendikdasmen 10/2025','Permendikbudristek 47/2023'],fields:[
+    {label:'Nama lengkap',kind:'text',required:true},{label:'NISN / ID siswa',kind:'text',required:true},{label:'Tanggal lahir',kind:'date',required:true},{label:'Jenis kelamin',kind:'select',required:true,options:['Laki-laki','Perempuan','Tidak diisi']},
+    {label:'Jalur / Jenjang / Jenis',kind:'text',required:true},{label:'Program',kind:'text',required:true},{label:'Kelas / rombel',kind:'text',required:true},{label:'Orang Tua / Wali',kind:'text',required:true},
+    {label:'Status peserta didik',kind:'select',required:true,options:spec.lifecycle},{label:'Tanggal masuk',kind:'date',required:true},{label:'Catatan akademik',kind:'textarea'}
+  ],validation:['Identitas siswa wajib lengkap','Program dan kelas harus memiliki parent yang valid','Relasi wali wajib dapat ditelusuri','Status mengikuti lifecycle peserta didik']};
+  if(key.includes('master data|orang tua / wali')) return {...common,standard:'Standar Pengelolaan + relasi wali',basis:['Permendikbudristek 47/2023','PP 57/2021 jo. PP 4/2022'],fields:[
     {label:'Nama lengkap wali',kind:'text',required:true},{label:'Hubungan dengan murid',kind:'select',required:true,options:['Ayah','Ibu','Wali','Lainnya']},{label:'Nomor kontak',kind:'text',required:true},{label:'Email',kind:'text'},
-    {label:'Murid terhubung',kind:'text',required:true},{label:'Persetujuan / otorisasi',kind:'select',required:true,options:['Belum diverifikasi','Diverifikasi','Dicabut']},{label:'Catatan',kind:'textarea'},{label:'Status',kind:'select',required:true,options:spec.lifecycle}
-  ],validation:['Relasi wali-murid harus eksplisit','Otorisasi akses harus tercatat','Data tidak boleh digunakan di luar scope akses']};
-  if(key.includes('master data|mentor')||key.includes('master data|mentor osn')) return {...common,standard:'Standar Tenaga Kependidikan + Standar Pengelolaan',basis:['Permendikdasmen 21/2025','Permendikbudristek 47/2023'],fields:[
-    {label:'Nama lengkap',kind:'text',required:true},{label:'Peran pendidik / tenaga kependidikan',kind:'select',required:true,options:['Guru','Tutor','Instruktur','Konselor','Fasilitator','Tenaga administrasi','Lainnya']},
-    {label:'Kualifikasi pendidikan',kind:'text',required:true},{label:'Kompetensi / bidang ajar',kind:'text',required:true},{label:'Credential / bukti kualifikasi',kind:'text',required:true},
-    {label:'Penugasan / program',kind:'text',required:true},{label:'Beban kerja / ketersediaan',kind:'text'},{label:'Status verifikasi',kind:'select',required:true,options:['Applied','Review','Verified','Active','Suspended']}
-  ],validation:['Kualifikasi dan kompetensi harus dapat dibuktikan','Penugasan harus eksplisit','Status verifikasi tidak boleh melewati proses review']};
-  if(key.includes('master data|institusi')||key.includes('master data|kampus / cabang')) return {...common,standard:'Standar Pengelolaan + Sarana Prasarana',basis:['Permendikbudristek 47/2023','Permendikbudristek 22/2023'],fields:[
-    {label:'Nama satuan / institusi',kind:'text',required:true},{label:'NPSN / kode lembaga (bila berlaku)',kind:'text'},{label:'Jalur / Jenjang / Jenis',kind:'text',required:true},
-    {label:'Alamat / lokasi',kind:'text',required:true},{label:'Penanggung jawab',kind:'text',required:true},{label:'Status operasional',kind:'select',required:true,options:['Draft','Active','Suspended','Closed']},
-    {label:'Status sarana-prasarana',kind:'select',options:['Belum dinilai','Memadai','Perlu pemenuhan','Perlu perbaikan']},{label:'Catatan tata kelola',kind:'textarea'}
-  ],validation:['Identitas lembaga wajib','Konteks jalur/jenjang/jenis wajib','Status operasional dan kondisi layanan harus terpisah']};
-  if(key.includes('master data|program')||key.includes('master data|mata pelajaran')||key.includes('master data|kurikulum')) return {...common,standard:'Standar Isi + SKL + Standar Proses',basis:['Permendikdasmen 12/2025','Permendikdasmen 10/2025','Permendikdasmen 1/2026'],fields:[
-    {label:'Nama / kode',kind:'text',required:true},{label:'Jalur / Jenjang / Jenis',kind:'text',required:true},{label:'Versi kurikulum',kind:'text',required:true},{label:'Periode berlaku',kind:'text',required:true},
-    {label:'Kompetensi lulusan yang dituju',kind:'textarea',required:true},{label:'Ruang lingkup materi',kind:'textarea',required:true},{label:'Tujuan pembelajaran',kind:'textarea',required:true},{label:'Status publikasi',kind:'select',required:true,options:['Draft','Review','Published','Archived']}
-  ],validation:['Kompetensi lulusan dan ruang lingkup materi harus terhubung','Versi dan periode berlaku wajib jelas','Perubahan kurikulum harus melalui review']};
+    {label:'Murid terhubung',kind:'text',required:true},{label:'Persetujuan / otorisasi',kind:'select',required:true,options:['Belum diverifikasi','Diverifikasi','Dicabut']},{label:'Kontak darurat',kind:'text'},{label:'Catatan relasi',kind:'textarea'},
+    {label:'Status relasi',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Relasi wali-murid harus eksplisit','Otorisasi akses harus tercatat','Data kontak mengikuti scope akses','Status relasi harus dapat diaudit']};
+  if(key.includes('master data|mentor osn')) return {...common,standard:'Pembinaan OSN + Standar Pengelolaan',basis:['Permendikbudristek 47/2023'],fields:[
+    {label:'Nama lengkap',kind:'text',required:true},{label:'Disiplin OSN',kind:'select',required:true,options:['Matematika','Fisika','Kimia','Biologi','Informatika','Astronomi']},{label:'Credential OSN',kind:'text',required:true},
+    {label:'Track pembinaan',kind:'text',required:true},{label:'Riwayat prestasi / pengalaman',kind:'textarea'},{label:'Ketersediaan pembinaan',kind:'text',required:true},{label:'Bukti credential',kind:'text',required:true},
+    {label:'Status verifikasi',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Disiplin OSN wajib spesifik','Credential harus memiliki bukti','Track pembinaan harus jelas','Status tidak boleh melewati verifikasi tanpa review']};
+  if(key.includes('master data|mentor')) return {...common,standard:'Standar Tenaga Kependidikan + Pengelolaan',basis:['Permendikbudristek 47/2023'],fields:[
+    {label:'Nama lengkap',kind:'text',required:true},{label:'Peran',kind:'select',required:true,options:['Guru','Tutor','Instruktur','Konselor','Fasilitator','Administrator']},{label:'Bidang ajar',kind:'text',required:true},
+    {label:'Kualifikasi pendidikan',kind:'text',required:true},{label:'Credential / sertifikasi',kind:'text',required:true},{label:'Program penugasan',kind:'text',required:true},{label:'Availability',kind:'text'},
+    {label:'Status verifikasi',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Kualifikasi dan kompetensi harus dapat dibuktikan','Penugasan harus eksplisit','Availability harus dapat digunakan untuk penjadwalan','Status verifikasi mengikuti lifecycle mentor']};
+  if(key.includes('master data|institusi')) return {...common,standard:'Standar Pengelolaan + Sarana Prasarana',basis:['Permendikbudristek 47/2023'],fields:[
+    {label:'Nama institusi',kind:'text',required:true},{label:'Kode / NPSN',kind:'text'},{label:'Tipe institusi',kind:'select',required:true,options:['Sekolah','Lembaga Kursus','Bimbingan Belajar','Perguruan Tinggi','Organisasi Pendidikan','Lainnya']},
+    {label:'Jalur / Jenjang / Jenis',kind:'text',required:true},{label:'Alamat',kind:'text',required:true},{label:'Penanggung jawab',kind:'text',required:true},{label:'Kontak institusi',kind:'text'},
+    {label:'Status operasional',kind:'select',required:true,options:spec.lifecycle},{label:'Catatan tata kelola',kind:'textarea'}
+  ],validation:['Institusi harus memiliki identitas tenant yang stabil','Status operasional terpisah dari status sarana','Penanggung jawab wajib jelas']};
+  if(key.includes('master data|kampus / cabang')) return {...common,standard:'Standar Pengelolaan + Sarana Prasarana',basis:['Permendikbudristek 22/2023','Permendikbudristek 47/2023'],fields:[
+    {label:'Nama kampus / cabang',kind:'text',required:true},{label:'Kode kampus / cabang',kind:'text',required:true},{label:'Institusi induk',kind:'text',required:true},{label:'Lokasi',kind:'text',required:true},
+    {label:'Penanggung jawab lokasi',kind:'text',required:true},{label:'Kontak lokasi',kind:'text'},{label:'Layanan / program tersedia',kind:'textarea'},{label:'Status operasional',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Cabang wajib memiliki institusi induk','Kode lokasi harus unik dalam tenant','Layanan harus terhubung ke program yang tersedia']};
+  if(key.includes('master data|user & identity')) return {...common,standard:'Identity & Access Governance',basis:['Kebijakan keamanan Education OS'],fields:[
+    {label:'User ID',kind:'text',required:true},{label:'Nama profil',kind:'text',required:true},{label:'Email / login',kind:'text',required:true},{label:'Authentication method',kind:'select',required:true,options:['Password','Magic Link','Google','Passkey']},
+    {label:'Profile ID',kind:'text',required:true},{label:'Tenant / organisasi',kind:'text',required:true},{label:'Role utama',kind:'text',required:true},{label:'MFA / security status',kind:'select',options:['Not enabled','Enabled','Required']},
+    {label:'Status identity',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Auth identity tidak boleh disamakan dengan profile person','Tenant scope wajib jelas','Role berasal dari permission model','Perubahan identity harus diaudit']};
+  if(key.includes('master data|role & permission')) return {...common,standard:'RBAC & Least Privilege',basis:['Kebijakan keamanan Education OS'],fields:[
+    {label:'Role',kind:'text',required:true},{label:'Scope',kind:'select',required:true,options:['Global','Institution','Campus','Program','Class','Personal']},{label:'Permission set',kind:'textarea',required:true},
+    {label:'Policy',kind:'textarea',required:true},{label:'Resource scope',kind:'text',required:true},{label:'Approval owner',kind:'text',required:true},{label:'Conflict check',kind:'select',options:['Not checked','Passed','Conflict']},
+    {label:'Status role',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Permission mengikuti least privilege','Scope harus eksplisit','Conflict check wajib sebelum role aktif','Perubahan permission harus diaudit']};
+  if(key.includes('master data|program')) return {...common,standard:'Standar Isi + Standar Proses',basis:['Permendikdasmen 12/2025','Permendikdasmen 1/2026'],fields:[
+    {label:'Kode program',kind:'text',required:true},{label:'Nama program',kind:'text',required:true},{label:'Jalur / Jenjang / Jenis',kind:'text',required:true},{label:'Tujuan program',kind:'textarea',required:true},
+    {label:'Kurikulum',kind:'text',required:true},{label:'Durasi / periode',kind:'text',required:true},{label:'Kapasitas peserta',kind:'number'},{label:'Billing item',kind:'text'},
+    {label:'Status program',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Program harus memiliki tujuan dan kurikulum','Program dapat menjadi parent enrollment dan billing','Status program harus melalui lifecycle']};
+  if(key.includes('master data|mata pelajaran')) return {...common,standard:'Standar Isi + Kurikulum',basis:['Permendikdasmen 12/2025'],fields:[
+    {label:'Kode mata pelajaran',kind:'text',required:true},{label:'Nama mata pelajaran',kind:'text',required:true},{label:'Program terkait',kind:'text',required:true},{label:'Domain / bidang',kind:'text',required:true},
+    {label:'Deskripsi',kind:'textarea'},{label:'Kompetensi terkait',kind:'textarea',required:true},{label:'Jam / beban belajar',kind:'number'},{label:'Urutan kurikulum',kind:'number'},
+    {label:'Status mata pelajaran',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Kode subject harus stabil','Subject harus terhubung ke program dan kompetensi','Mapping kurikulum harus dapat ditelusuri']};
+  if(key.includes('master data|kurikulum')) return {...common,standard:'Standar Isi + SKL + Standar Proses',basis:['Permendikdasmen 10/2025','Permendikdasmen 12/2025','Permendikdasmen 1/2026'],fields:[
+    {label:'Kode kurikulum',kind:'text',required:true},{label:'Nama / versi kurikulum',kind:'text',required:true},{label:'Program',kind:'text',required:true},{label:'Periode berlaku',kind:'text',required:true},
+    {label:'Kompetensi lulusan',kind:'textarea',required:true},{label:'Struktur mata pelajaran',kind:'textarea',required:true},{label:'Dokumen kurikulum',kind:'text',required:true},{label:'Reviewer / approver',kind:'text',required:true},
+    {label:'Status publikasi',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Versi kurikulum harus unik dan terlacak','Struktur subject harus terhubung','Publikasi membutuhkan reviewer/approver','Perubahan published version harus membuat version baru']};
+  if(key.includes('master data|kompetensi')) return {...common,standard:'SKL + Standar Penilaian',basis:['Permendikdasmen 10/2025','Permendikbudristek 21/2022'],fields:[
+    {label:'Kode kompetensi',kind:'text',required:true},{label:'Nama kompetensi',kind:'text',required:true},{label:'Domain',kind:'text',required:true},{label:'Level mastery',kind:'select',required:true,options:['Foundation','Developing','Proficient','Advanced','Mastered']},
+    {label:'Deskripsi kompetensi',kind:'textarea',required:true},{label:'Kurikulum mapping',kind:'text',required:true},{label:'Evidence type',kind:'text',required:true},{label:'Assessment mapping',kind:'text'},
+    {label:'Status kompetensi',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Kompetensi harus reusable lintas asesmen','Mapping kurikulum wajib','Evidence dan assessment source harus dapat ditelusuri']};
+  if(key.includes('master data|tahun akademik')) return {...common,standard:'Standar Pengelolaan',basis:['Permendikbudristek 47/2023'],fields:[
+    {label:'Tahun akademik',kind:'text',required:true},{label:'Tanggal mulai',kind:'date',required:true},{label:'Tanggal selesai',kind:'date',required:true},{label:'Periode / semester',kind:'textarea',required:true},
+    {label:'Kalender akademik',kind:'text'},{label:'Penanggung jawab',kind:'text',required:true},{label:'Tanggal penutupan',kind:'date'},{label:'Status tahun akademik',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Tanggal mulai harus sebelum selesai','Periode semester harus berada dalam tahun akademik','Tahun Closed tidak menerima transaksi baru']};
+  if(key.includes('master data|master reference')) return {...common,standard:'Reference Data Governance',basis:['Kebijakan data Education OS'],fields:[
+    {label:'Kode reference',kind:'text',required:true},{label:'Kategori',kind:'text',required:true},{label:'Label',kind:'text',required:true},{label:'Nilai',kind:'text',required:true},
+    {label:'Urutan',kind:'number'},{label:'Digunakan oleh domain',kind:'text',required:true},{label:'Deskripsi',kind:'textarea'},{label:'Status reference',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Kode reference unik dalam kategori','Reference aktif harus memiliki consumer domain','Jangan hard-code nilai yang seharusnya berasal dari reference data']};
+  if(key.includes('master data|dokumen')) return {...common,standard:'Document Governance + Retention',basis:['Kebijakan governance Education OS'],fields:[
+    {label:'Nomor / nama dokumen',kind:'text',required:true},{label:'Tipe dokumen',kind:'select',required:true,options:['Identitas','Credential','Kurikulum','Compliance','Keuangan','Akademik','Operasional','Lainnya']},{label:'Pemilik',kind:'text',required:true},{label:'Versi',kind:'text',required:true},
+    {label:'Tanggal terbit',kind:'date'},{label:'Tanggal berlaku',kind:'date'},{label:'Tanggal kedaluwarsa',kind:'date'},{label:'Akses / visibility',kind:'select',required:true,options:['Private','Tenant','Restricted','Public']},
+    {label:'Retensi',kind:'text',required:true},{label:'Status dokumen',kind:'select',required:true,options:spec.lifecycle}
+  ],validation:['Owner dan versi wajib','Akses dokumen harus mengikuti scope','Dokumen expired tidak boleh menjadi evidence aktif tanpa review','Retensi harus tercatat']};
   if(key.includes('academic erp|kalender')||key.includes('academic erp|periode')) return {...common,standard:'Standar Pengelolaan',basis:['Permendikbudristek 47/2023'],fields:[
     {label:'Tahun akademik',kind:'text',required:true},{label:'Nama periode / semester',kind:'text',required:true},{label:'Tanggal mulai',kind:'date',required:true},{label:'Tanggal selesai',kind:'date',required:true},
     {label:'Tanggal penutupan',kind:'date'},{label:'Status',kind:'select',required:true,options:['Draft','Active','Closed']},{label:'Penanggung jawab',kind:'text',required:true},{label:'Catatan',kind:'textarea'}
