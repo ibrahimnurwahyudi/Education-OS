@@ -97,3 +97,61 @@ textarea.field{resize:vertical}
 .materio-switcher{display:grid;gap:.5rem}.materio-switcher>button{border:1px solid #e7e7ef;background:#fff;border-radius:.5rem;padding:.7rem;text-align:left;display:flex;flex-direction:column}.materio-switcher>button.active{border-color:#696cff;background:#eef0ff}.materio-switcher>button b{font-size:.72rem;color:#384551}.materio-switcher>button span{font-size:.6rem;color:#8592a3;margin-top:.15rem}
 @media(max-width:1024px){.materio-sidebar{width:235px}.materio-page{margin-left:235px}.materio-user-copy{display:none}.materio-content{padding:.9rem}.materio-context-meta{display:none!important}}
 @media(max-width:760px){.materio-sidebar{position:relative;width:100%;min-height:auto;max-height:48vh}.materio-shell{display:block}.materio-page{margin-left:0}.materio-navbar{height:auto;min-height:64px;padding:.65rem .8rem}.materio-search{width:52vw}.materio-page-heading{align-items:flex-start;flex-direction:column}.materio-heading-actions{width:100%}.materio-heading-actions button{flex:1}.materio-context-strip{align-items:flex-start}.materio-sidebar{border-right:0;border-bottom:1px solid #e7e7ef}.materio-nav{max-height:38vh}.materio-user{display:none}}
+
+
+/* Education OS — shared operational workspace system
+   These primitives are intentionally scoped to every workspace, not only the admin shell. */
+.m-role-workspace{display:block;min-width:0;color:var(--m-text)}
+.m-role-workspace .m-topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.15rem 1.25rem;margin-bottom:1rem;background:#fff;border:1px solid #e8e8ef;border-radius:.8rem;box-shadow:0 .125rem .3rem rgba(67,89,113,.06)}
+.m-role-workspace .m-eyebrow,.m-role-workspace .m-section-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:#8994a5;font-weight:700}
+.m-role-workspace .m-title{color:#384551;font-size:1.2rem;line-height:1.35;font-weight:750;margin-top:.22rem}
+.m-role-workspace .m-subtitle{color:#748092;font-size:.76rem;line-height:1.55}
+.m-role-workspace .m-card{background:#fff;border:1px solid #e8e8ef;border-radius:.8rem;box-shadow:0 .125rem .3rem rgba(67,89,113,.055)}
+.m-role-workspace .m-sidebar{background:#fff;border:1px solid #e8e8ef;border-radius:.8rem;padding:.55rem;box-shadow:0 .125rem .3rem rgba(67,89,113,.055);height:max-content;position:sticky;top:1rem}
+.m-role-workspace .m-nav-item{display:flex;align-items:center;gap:.6rem;width:100%;padding:.62rem .7rem;border:0;border-radius:.45rem;background:transparent;color:#5d6877;font-size:.72rem;text-align:left}
+.m-role-workspace .m-nav-item:hover{background:#f5f5fa}
+.m-role-workspace .m-nav-item.active{background:#eeeeff;color:#5b5fc7;font-weight:650}
+.m-role-workspace .m-section-label{padding:.75rem .65rem .35rem}
+.m-role-workspace .m-primary{display:inline-flex;align-items:center;justify-content:center;background:#696cff;color:#fff;border:1px solid #696cff;border-radius:.45rem;padding:.6rem .85rem;font-size:.72rem;font-weight:650;white-space:nowrap}
+.m-role-workspace .m-outline{display:inline-flex;align-items:center;justify-content:center;background:#fff;color:#46515f;border:1px solid #dfe1e7;border-radius:.45rem;padding:.55rem .75rem;font-size:.72rem;font-weight:550;white-space:nowrap}
+.m-role-workspace .m-kpi{padding:1rem}
+.m-role-workspace .m-kpi-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:#8a94a3;font-weight:650}
+.m-role-workspace .m-kpi-value{font-size:1.35rem;font-weight:750;color:#384551;margin-top:.3rem}
+.m-role-workspace .m-kpi-note{font-size:.64rem;color:#8994a5;margin-top:.2rem}
+.m-role-workspace .m-table{overflow:hidden}
+.m-role-workspace .m-table-scroll{overflow-x:auto;max-width:100%}
+.m-role-workspace table{width:100%;min-width:880px;border-collapse:separate;border-spacing:0;table-layout:auto}
+.m-role-workspace th{background:#f8f8fb;color:#7b8797;font-size:.61rem;text-transform:uppercase;letter-spacing:.055em;text-align:left;font-weight:700;padding:.78rem .9rem;border-bottom:1px solid #e7e7ef;white-space:nowrap}
+.m-role-workspace td{padding:.82rem .9rem;border-bottom:1px solid #f0f0f4;color:#566170;font-size:.72rem;line-height:1.4;vertical-align:top;max-width:260px}
+.m-role-workspace td:first-child{color:#384551;font-weight:600}
+.m-role-workspace td:not(:last-child){overflow-wrap:anywhere}
+.m-role-workspace tbody tr:hover td{background:#fafaff}
+.m-role-workspace .m-status{display:inline-flex;border-radius:.4rem;padding:.25rem .5rem;background:#eef0ff;color:#5963bd;font-size:.61rem;font-weight:650;white-space:nowrap}
+.m-role-workspace .m-input{width:100%;box-sizing:border-box;padding:.68rem .78rem;border:1px solid #dfe1e7;border-radius:.45rem;background:#fff;color:#384551;font-size:.75rem;line-height:1.4;outline:none}
+.m-role-workspace .m-input:focus{border-color:#696cff;box-shadow:0 0 0 .16rem rgba(105,108,255,.1)}
+.m-role-workspace .m-label{display:block;margin-bottom:.36rem;font-size:.66rem;font-weight:650;color:#566170}
+.m-role-workspace .m-help{margin-top:.28rem;font-size:.62rem;line-height:1.45;color:#98a1af}
+.m-role-workspace .m-detail{background:#fff;border:1px solid #e8e8ef;border-radius:.65rem;padding:.9rem;box-shadow:none;min-width:0}
+.m-role-workspace .m-detail dt{font-size:.6rem;text-transform:uppercase;letter-spacing:.055em;color:#9aa3af}
+.m-role-workspace .m-detail dd{margin:.3rem 0 0;color:#4f5a68;font-size:.74rem;line-height:1.45;overflow-wrap:anywhere}
+.m-role-workspace .m-chip{display:inline-flex;align-items:center;border:1px solid #e1e3ea;border-radius:.4rem;padding:.28rem .5rem;color:#687386;background:#fff;font-size:.62rem}
+.m-role-workspace .m-modal{position:fixed;inset:0;z-index:60;background:rgba(35,39,53,.45);display:grid;place-items:center;padding:1rem}
+.m-role-workspace .m-modal-card{width:min(1040px,100%);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e5e5ed;border-radius:.8rem;box-shadow:0 1rem 3rem rgba(35,39,53,.2)}
+@media(max-width:900px){
+  .m-role-workspace .m-sidebar{position:static}
+  .m-role-workspace .m-topbar{flex-direction:column}
+  .m-role-workspace .m-card{border-radius:.7rem}
+}
+@media(max-width:640px){
+  .m-role-workspace .m-topbar{padding:.9rem}
+  .m-role-workspace .m-title{font-size:1.05rem}
+  .m-role-workspace .m-table-scroll{margin:0 -1px}
+}
+
+/* Shared form modal primitives used by student, mentor, institution and admin flows. */
+.m-modal .m-modal-card .m-detail{background:#fff;border:1px solid #e8e8ef;border-radius:.65rem;padding:.9rem;box-shadow:none}
+.m-modal .m-modal-card .m-label{display:block;margin-bottom:.36rem;font-size:.66rem;font-weight:650;color:#566170}
+.m-modal .m-modal-card .m-input{width:100%;box-sizing:border-box;padding:.68rem .78rem;border:1px solid #dfe1e7;border-radius:.45rem;background:#fff;color:#384551;font-size:.75rem;line-height:1.4;outline:none}
+.m-modal .m-modal-card .m-input:focus{border-color:#696cff;box-shadow:0 0 0 .16rem rgba(105,108,255,.1)}
+.m-modal .m-modal-card .m-eyebrow{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:#8994a5;font-weight:700}
+.m-modal .m-modal-card .m-subtitle{color:#748092;font-size:.76rem;line-height:1.55}
