@@ -1,10 +1,8 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
 import App from './App';
+import NexusLanding from './NexusLanding';
 import './index.css';
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+import './nexus.css';
+function Root(){const [entered,setEntered]=useState(false);return entered?<App/>:<NexusLanding onEnter={()=>setEntered(true)}/>}
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><Root/></React.StrictMode>);
