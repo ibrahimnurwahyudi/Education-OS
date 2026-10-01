@@ -238,3 +238,146 @@ body{background:var(--eo-page);color:var(--eo-text)}
 .m-role-workspace .m-chip{border-color:#d8dde6;color:#596579;background:#f9fafb}
 .m-role-workspace .m-modal{background:rgba(15,23,42,.38)}
 .m-role-workspace .m-modal-card,.m-modal .m-modal-card{background:#fff;border-color:#dfe3ea;box-shadow:0 16px 45px rgba(31,41,55,.16)}
+
+
+/* Education OS — right workspace readability / enterprise form pass */
+.m-role-workspace>div>main{
+  min-width:0;
+  background:#fff;
+  border:1px solid #dfe4ec;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 2px 8px rgba(31,41,55,.045);
+}
+.m-role-workspace>div>main>.m-card{
+  background:#fff;
+  border-color:#d9dee8;
+}
+.m-role-workspace .m-topbar{
+  background:#f8f9fc;
+  border-color:#d9dee8;
+}
+.m-role-workspace .m-eyebrow,
+.m-role-workspace .m-section-label{
+  color:#667085;
+}
+.m-role-workspace .m-title{
+  color:#172033;
+  font-size:1.28rem;
+}
+.m-role-workspace .m-subtitle{
+  color:#596579;
+}
+.m-role-workspace .m-card,
+.m-role-workspace .m-detail,
+.m-role-workspace .m-kpi{
+  background:#fff;
+  border:1px solid #dfe4ec;
+}
+.m-role-workspace .m-kpi-label{
+  color:#596579;
+}
+.m-role-workspace .m-kpi-value{
+  color:#172033;
+}
+.m-role-workspace .m-kpi-note{
+  color:#667085;
+}
+.m-role-workspace .m-table{
+  border:1px solid #d9dee8;
+}
+.m-role-workspace th{
+  background:#eef1f5;
+  color:#475467;
+  font-size:.64rem;
+  border-bottom:2px solid #d9dee8;
+}
+.m-role-workspace td{
+  color:#344054;
+  font-size:.75rem;
+}
+.m-role-workspace td:first-child{
+  color:#172033;
+  font-weight:650;
+}
+.m-role-workspace tbody tr:nth-child(even) td{
+  background:#fbfcfe;
+}
+.m-role-workspace tbody tr:hover td{
+  background:#f1f4f8;
+}
+.m-role-workspace .m-detail dt{
+  color:#667085;
+}
+.m-role-workspace .m-detail dd{
+  color:#344054;
+}
+.m-role-workspace .m-help{
+  color:#667085;
+}
+.m-role-workspace .m-input,
+.m-role-workspace select.m-input,
+.m-role-workspace textarea.m-input{
+  background:#fff;
+  color:#172033;
+  border:1px solid #bfc7d4;
+}
+.m-role-workspace .m-input:hover{
+  border-color:#98a2b3;
+}
+.m-role-workspace .m-input:focus{
+  border-color:#5b5fc7;
+  box-shadow:0 0 0 3px rgba(91,95,199,.12);
+}
+.m-role-workspace .m-label{
+  color:#344054;
+  font-size:.69rem;
+}
+.m-role-workspace .m-outline{
+  color:#344054;
+  background:#fff;
+  border-color:#bfc7d4;
+}
+.m-role-workspace .m-outline:hover{
+  background:#f2f4f7;
+  border-color:#98a2b3;
+}
+.m-role-workspace .m-primary{
+  background:#4f54b8;
+  border-color:#4f54b8;
+}
+.m-role-workspace .m-primary:hover{
+  background:#454aa6;
+}
+.m-role-workspace .m-status{
+  background:#eef0ff;
+  color:#4248a8;
+  border:1px solid #d9dcff;
+}
+.m-role-workspace .m-sidebar{
+  border-color:#d9dee8;
+}
+.m-role-workspace .m-nav-item{
+  color:#475467;
+}
+.m-role-workspace .m-nav-item.active{
+  background:#e9ebff;
+  color:#3f46ad;
+}
+.m-role-workspace .m-chip{
+  background:#f8fafc;
+  color:#475467;
+  border-color:#d0d5dd;
+}
+.m-role-workspace .m-modal-card{
+  color:#344054;
+}
+.m-role-workspace .m-modal-card .m-label{
+  color:#344054;
+}
+.m-role-workspace .m-modal-card .m-subtitle{
+  color:#596579;
+}
+@media(max-width:900px){
+  .m-role-workspace>div>main{padding:12px}
+}
