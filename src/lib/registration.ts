@@ -77,3 +77,7 @@ export async function uploadApplicationFile(token:string,applicationId:string,us
 export async function saveApplicationDocument(token:string,input:Record<string,unknown>){
   return rest('application_documents',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(input)});
 }
+
+export async function prepareRegistrationBilling(token:string,applicationId:string){
+  return rest('rpc/prepare_registration_billing',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
+}
