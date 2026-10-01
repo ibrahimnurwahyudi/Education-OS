@@ -848,6 +848,73 @@ function AdminOperationalWorkspace({module,submenu,onAction}:{module:Module;subm
     {formOpen&&<div className="m-modal" onMouseDown={e=>{if(e.currentTarget===e.target)closeForm()}}><div className="m-modal-card"><div className="flex items-start justify-between border-b border-[#e7e7ef] p-5"><div><div className="m-eyebrow">{spec.entity} · Form</div><h2 className="mt-1 text-xl font-semibold">{editing?'Edit':'Tambah'} {spec.entity}</h2><div className="m-subtitle mt-1">{formSpec.standard} · {formSpec.basis.join(' · ')}</div></div><button className="m-outline" onClick={closeForm}><X size={15}/></button></div><div className="p-5"><div className="rounded-md border border-[#e7e7ef] bg-[#fafafa] p-4 text-xs text-[#687386]"><strong>Scope:</strong> {formSpec.scope}<div className="mt-1"><strong>Validation:</strong> {formSpec.validation.join(' · ')}</div></div>{error&&<div className="mt-3 rounded-md border border-[#f3b4bc] bg-[#ffe9ec] p-3 text-xs text-[#c73d50]">{error}</div>}<div className="mt-5 grid gap-4 md:grid-cols-2">{formSpec.fields.map(f=><label key={f.label}><span className="m-label">{f.label}{f.required&&' *'}</span>{f.kind==='textarea'?<textarea className="m-input min-h-28" value={formValues[f.label]||''} onChange={e=>setFormValues(v=>({...v,[f.label]:e.target.value}))} placeholder={'Masukkan '+f.label.toLowerCase()}/>:f.kind==='select'?<select className="m-input" value={formValues[f.label]||''} onChange={e=>setFormValues(v=>({...v,[f.label]:e.target.value}))}><option value="">Pilih {f.label.toLowerCase()}</option>{(f.options||spec.lifecycle).map(o=><option key={o}>{o}</option>)}</select>:<input className="m-input" type={f.kind==='number'?'number':f.kind==='date'?'date':f.kind==='datetime'?'datetime-local':'text'} value={formValues[f.label]||''} onChange={e=>setFormValues(v=>({...v,[f.label]:e.target.value}))} placeholder={'Masukkan '+f.label.toLowerCase()}/>} {f.help&&<div className="m-help">{f.help}</div>}</label>)}</div><div className="mt-6 flex justify-end gap-2 border-t border-[#e7e7ef] pt-4"><button className="m-outline" onClick={closeForm}>Batal</button><button className="m-primary" onClick={save}>{editing?'Simpan perubahan':'Simpan '+spec.entity}</button></div></div></div></div>}
   </div>;
 }
+function RoleOperationalWorkspace({role,module,submenu,records,record,setRecord,onAction,onReport}:{role:Role;module:Module;submenu:string;records:RecordItem[];record:RecordItem|null;setRecord:(r:RecordItem|null)=>void;onAction:(a:string)=>void;onReport:()=>void}){
+  const schema=getSemanticFormContext(module.name,submenu);
+  const detail=getDetailSpec(module.name,submenu);
+  const [tab,setTab]=useState('Records');
+  const [query,setQuery]=useState('');
+  const [selected,setSelected]=useState<RecordItem|null>(null);
+  const fields=schema.fields;
+  const lifecycle=['Draft','Aktif','Perlu Review','Selesai','Diarsipkan'];
+  const rows=records.map((r,index)=>{
+    const data=r.data&&Object.keys(r.data).length?r.data:{
+      [fields[0]]:r.title,
+      [fields[1]]:r.meta,
+      [fields[2]]:r.detail,
+      [fields[3]]:role,
+      [fields[4]]:'2026/2027',
+      [fields[5]]:'Evidence tercatat',
+      [fields[6]]:'Administrator',
+      [fields[7]]:r.status
+    };
+    return {...r,data};
+  });
+  const filtered=rows.filter(r=>[r.id,r.title,r.meta,r.detail,...Object.values(r.data||{})].join(' ').toLowerCase().includes(query.toLowerCase()));
+  const actions=Array.isArray(detail.actions)?detail.actions:[];
+
+  return <div className="m-role-workspace">
+    <div className="m-topbar">
+      <div>
+        <div className="m-eyebrow">Education OS · {role} Workspace · {module.name}</div>
+        <div className="m-title">{schema.title}</div>
+        <div className="m-subtitle">{schema.help||'Workspace operasional '+submenu+' dengan schema dan evidence yang dapat ditelusuri.'}</div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {actions.slice(0,2).map(a=><button key={a} className="m-primary" onClick={()=>onAction(a)}><Plus size={14} className="mr-1 inline"/>{a}</button>)}
+      </div>
+    </div>
+
+    <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <aside className="m-sidebar">
+        <div className="m-section-label">Workspace</div>
+        {['Overview','Records','Schema','Workflow','Evidence'].map(t=><button key={t} className={'m-nav-item '+(tab===t?'active':'')} onClick={()=>setTab(t)}>{t}</button>)}
+        <div className="m-section-label">Actions</div>
+        <div className="grid gap-2 p-2">{actions.slice(0,6).map(a=><button key={a} className="m-outline text-left" onClick={()=>onAction(a)}>{a}</button>)}</div>
+      </aside>
+
+      <main className="space-y-4">
+        {tab==='Overview'&&<div className="space-y-4">
+          <section className="m-card p-5"><div className="m-eyebrow">Domain definition</div><h2 className="mt-1 text-xl font-semibold">{schema.title}</h2><p className="m-subtitle mt-2 max-w-4xl">{schema.help||detail.description||'Data domain Education OS.'}</p><div className="mt-4 flex flex-wrap gap-2">{lifecycle.map(x=><span key={x} className="m-chip">{x}</span>)}</div></section>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{['Total record','Aktif','Perlu review','Evidence'].map((x,i)=><div key={x} className="m-card m-kpi"><div className="m-kpi-label">{x}</div><div className="m-kpi-value">{i===0?rows.length:i===1?rows.filter(r=>/aktif|active|verified/i.test(r.status)).length:i===2?rows.filter(r=>/review|pending|draft/i.test(r.status)).length:rows.filter(r=>r.data&&Object.values(r.data).some(v=>/evidence/i.test(v))).length}</div><div className="m-kpi-note">{submenu} · live workspace</div></div>)}</div>
+        </div>}
+
+        {tab==='Records'&&<section className="m-card m-table">
+          <div className="p-4 md:p-5"><div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between"><div><div className="m-eyebrow">Operational records</div><div className="mt-1 text-lg font-semibold">{schema.title}</div><div className="m-subtitle mt-1">Setiap kolom berasal dari schema submenu ini.</div></div><div className="flex min-w-[220px] items-center gap-2 rounded-md border border-[#e7e7ef] bg-white px-3"><Search size={14} className="text-[#8592a3]"/><input className="m-input border-0 !p-2 !shadow-none" value={query} onChange={e=>setQuery(e.target.value)} placeholder={'Cari '+submenu.toLowerCase()+'...'}/></div></div></div>
+          <div className="m-table-scroll"><table><thead><tr>{fields.slice(0,5).map(f=><th key={f}>{f}</th>)}<th>Status</th><th>Aksi</th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}>{fields.slice(0,5).map((f)=><td key={f}>{r.data?.[f]||'—'}</td>)}<td><span className="m-status">{r.status}</span></td><td><button className="m-outline" onClick={()=>setSelected(r)}>Buka</button></td></tr>)}</tbody></table></div>
+        </section>}
+
+        {tab==='Schema'&&<section className="m-card p-5"><div className="m-eyebrow">Entity schema</div><h2 className="mt-1 text-lg font-semibold">{schema.title}</h2><div className="mt-4 grid gap-3 md:grid-cols-2">{fields.map((f,i)=><div key={f} className="m-detail"><dt>{f}</dt><dd>{schema.selects?.[f]?.join(' / ')||'Text / operational value'}</dd><div className="m-help">{i===0?'Primary record identifier / subject.':'Field khusus untuk '+submenu+'.'}</div></div>)}</div></section>}
+
+        {tab==='Workflow'&&<section className="m-card p-5"><div className="m-eyebrow">Lifecycle & controls</div><h2 className="mt-1 text-lg font-semibold">{schema.title}</h2><div className="mt-4 grid gap-3 md:grid-cols-2">{lifecycle.map((x,i)=><div key={x} className="m-detail"><strong>{i+1}. {x}</strong><div className="m-help mt-2">{i<lifecycle.length-1?'Next: '+lifecycle[i+1]:'Terminal state.'}</div></div>)}</div><div className="mt-4 rounded-md border border-[#e7e7ef] bg-[#fafafa] p-4 text-xs text-[#687386]">Perubahan status harus menghasilkan evidence dan audit trail. Keputusan akademik berdampak tinggi tetap membutuhkan manusia yang berwenang.</div></section>}
+
+        {tab==='Evidence'&&<section className="m-card p-5"><div className="m-eyebrow">Evidence & relations</div><h2 className="mt-1 text-lg font-semibold">{schema.title}</h2><div className="mt-4 grid gap-3 md:grid-cols-3">{['Source','Owner','Audit trail'].map(x=><div key={x} className="m-detail"><dt>{x}</dt><dd>{x==='Source'?(fields[5]||'Source record'):x==='Owner'?(fields[6]||'Accountable actor'):'Activity and mutation history'}</dd></div>)}</div><div className="mt-4 flex flex-wrap gap-2">{(detail.relations||[]).map(x=><span key={x} className="m-chip">{x}</span>)}</div></section>}
+      </main>
+    </div>
+
+    {selected&&<div className="m-modal" onMouseDown={e=>{if(e.currentTarget===e.target)setSelected(null)}}><div className="m-modal-card"><div className="flex items-start justify-between gap-4 border-b border-[#e7e7ef] p-5"><div><div className="m-eyebrow">{submenu} · Detail</div><h2 className="mt-1 text-xl font-semibold">{selected.title}</h2><div className="m-subtitle mt-1">{selected.id} · {selected.status}</div></div><button className="m-outline" onClick={()=>setSelected(null)}><X size={15}/></button></div><div className="grid gap-3 p-5 md:grid-cols-2">{fields.map(f=><div key={f} className="m-detail"><dt>{f}</dt><dd>{selected.data?.[f]||'—'}</dd></div>)}</div><div className="border-t border-[#e7e7ef] p-5"><div className="m-eyebrow">Relations</div><div className="mt-2 flex flex-wrap gap-2">{(detail.relations||[]).map(x=><span key={x} className="m-chip">{x}</span>)}</div></div></div></div>}
+  </div>;
+}
+
 function ListWorkspace({role,module,submenu,records,record,setRecord,onAction,onReport}:{role:Role;module:Module;submenu:string;records:RecordItem[];record:RecordItem|null;setRecord:(r:RecordItem|null)=>void;onAction:(a:string)=>void;onReport:()=>void}){const spec=getDetailSpec(module.name,submenu);const formSchema=getSemanticFormContext(module.name,submenu);const displayFields=formSchema.fields;if(record)return <DetailPage role={role} module={module} submenu={submenu} record={record} onBack={()=>setRecord(null)} onAction={onAction} onReport={onReport}/>;return <div className="space-y-5"><ContextPanel role={role} module={module.name} submenu={submenu} onAction={onAction}/><section className="grid gap-3 md:grid-cols-4">{spec.summary.slice(0,4).map((k,i)=><div key={k} className="rounded-2xl border border-white/10 bg-white/[.025] p-4"><div className="text-[10px] uppercase tracking-widest text-slate-600">{k}</div><div className="mt-2 text-sm font-semibold leading-5">{i===0?records.length:i===1?records.filter(r=>r.status==='Aktif').length:'—'}</div></div>)}</section><section className="rounded-3xl border border-white/10 bg-white/[.025]"><div className="flex flex-col gap-3 border-b border-white/10 p-5 md:flex-row md:items-center md:justify-between"><div><div className="text-[10px] uppercase tracking-widest text-cyan-300">{formSchema.title}</div><h2 className="mt-1 font-semibold">{submenu}</h2><p className="mt-1 text-xs text-slate-500">{formSchema.help}</p></div><div className="flex flex-wrap gap-2"><div className="flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs text-slate-500"><Search size={14}/> Cari</div>{(Array.isArray(spec.actions)?spec.actions:[]).map(a=><button key={a} onClick={()=>onAction(a)} className="flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs hover:bg-white/5"><Plus size={14}/>{a}</button>)}</div></div>{records.length===0&&<div className="p-10 text-center"><div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[.03]"><FileText size={20} className="text-cyan-300"/></div><h3 className="mt-4 text-base font-semibold">Belum ada {submenu.toLowerCase()}</h3><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">Ruang ini siap digunakan. Tambahkan {submenu.toLowerCase()} untuk mulai membangun rekamannya.</p>{spec.actions[0]&&<button onClick={()=>onAction(spec.actions[0])} className="mt-5 rounded-xl bg-cyan-300 px-4 py-2 text-xs font-semibold text-slate-950"><Plus size={14} className="mr-1 inline"/>{spec.actions[0]}</button>}</div>}<div className="hidden border-b border-white/10 px-5 py-3 md:grid md:grid-cols-[minmax(220px,1.5fr)_repeat(3,minmax(120px,1fr))_32px] md:gap-4">{displayFields.slice(0,4).map(f=><div key={f} className="text-[10px] uppercase tracking-widest text-slate-600">{f}</div>)}<div/></div><div className="divide-y divide-white/10">{records.map(r=><button key={r.id} onClick={()=>setRecord(r)} className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-4 p-5 text-left hover:bg-white/[.025] md:grid-cols-[minmax(220px,1.5fr)_repeat(3,minmax(120px,1fr))_32px]"><div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.03] md:hidden"><FileText size={17} className="text-cyan-300"/></div><div className="min-w-0"><div className="font-medium">{r.title}</div><div className="mt-1 text-xs text-slate-500">{r.meta}</div></div><div className="hidden text-xs text-slate-400 md:block">{r.data?.[displayFields[1]]||r.meta}</div><div className="hidden text-xs text-slate-400 md:block">{r.data?.[displayFields[2]]||'—'}</div><span className="rounded-full border border-white/10 px-2.5 py-1 text-[10px] text-slate-400">{r.status}</span><ChevronRight size={16} className="text-slate-700"/></button>)}</div></section></div>}
 
 type DetailSpec={tabs:string[];actions:string[];summary:string[];primary:string;fields:string[];purpose:string;lifecycle:string[];evidence:string[];approval:string[];validation:string[]};
