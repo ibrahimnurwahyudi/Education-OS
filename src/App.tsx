@@ -1284,7 +1284,10 @@ function getFormContext(module:string,submenu:string,type:string){const rawType=
 
 function FormModal({type,role,module,submenu,personId,onClose}:{type:string;role:Role;module:string;submenu:string;personId:string;onClose:()=>void}){
   const typeText=asText(type,'Form'), lower=typeText.toLowerCase(), isStage=lower.startsWith('tahapan · '), stage=typeText.split(' · ')[1]||'Draft';
-  const ctx=getFormContext(module,submenu,typeText);
+  const adminSpec=role==='Administrator'?getAdminDomainSpec(module,submenu):null;
+  const adminFormSpec=adminSpec?getRegulatoryFormSpec(module,submenu,adminSpec,typeText):null;
+  const baseCtx=getFormContext(module,submenu,typeText);
+  const ctx=adminFormSpec?{title:adminSpec!.entity,fields:adminFormSpec.fields.map(f=>f.label),selects:Object.fromEntries(adminFormSpec.fields.filter(f=>f.kind==='select').map(f=>[f.label,f.options||adminSpec!.lifecycle])),help:adminSpec!.purpose}:baseCtx;
   const detail=getDetailSpec(module,submenu);
   const fields=isStage?['Tahap','Status saat ini','Tanggal tindakan','Penanggung jawab','Detail tindakan','Evidence','Review / validasi','Catatan','Tindak lanjut']:ctx.fields;
   const [values,setValues]=useState<Record<string,string>>({});
