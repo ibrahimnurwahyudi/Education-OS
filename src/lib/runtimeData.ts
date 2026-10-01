@@ -1,7 +1,7 @@
 const SUPABASE_URL='https://cbuunkkmpwwflxlqypxn.supabase.co';
 const SUPABASE_KEY='sb_publishable_Jvgq7Mjv2C4qrwDwkCaoMQ_efWLPRPV';
 
-type Identity={role:'Siswa'|'Orang Tua'|'Mentor'|'Mentor OSN'|'Institusi'|'Administrator';personId:string;organizationId?:string;accessToken?:string};
+type Identity={role:'Siswa'|'Orang Tua'|'Mentor'|'Mentor OSN'|'Institusi'|'HRD'|'Administrator';personId:string;organizationId?:string;accessToken?:string};
 type DbStudent={id:string;profile_id:string;organization_id:string;status:string;grade_level:string|null;profiles?:{display_name:string|null}|{display_name:string|null}[]|null};
 
 async function rest(path:string,token:string){
