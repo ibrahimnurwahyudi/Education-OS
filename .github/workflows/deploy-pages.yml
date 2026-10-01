@@ -1,4 +1,4 @@
-name: Deploy Education OS to GitHub Pages
+name: Deploy Education OS + Public Website to GitHub Pages
 
 on:
   push:
@@ -26,14 +26,22 @@ jobs:
           node-version: 22.x
       - name: Install
         run: npm install --no-audit --no-fund
-      - name: Build
+      - name: Build operational Education OS
         run: npm run build
+      - name: Assemble deterministic Pages artifact
+        run: |
+          rm -rf pages-site
+          mkdir -p pages-site/app
+          cp -R website/. pages-site/
+          cp -R dist/. pages-site/app/
+          rm -f pages-site/vercel.json
+          find pages-site -maxdepth 2 -type f | sort | head -80
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./pages-site
 
   deploy:
     environment:
@@ -42,6 +50,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy deterministic Pages artifact
         id: deployment
         uses: actions/deploy-pages@v4
