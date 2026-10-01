@@ -377,7 +377,7 @@ if(authChecking)return <div className="min-h-screen grid place-items-center bg-s
 if(!session)return showPublicSite?<PublicEducationWebsite onLogin={()=>setShowPublicSite(false)}/>:<IdentityGateway onLogin={(account:GatewayAccount)=>{setSession(account as DemoSession);setRole(account.role==='Administrator'?'Institusi':account.role);setModuleName(account.role==='Administrator'?adminConfig.modules[0].name:roleConfigs[account.role].modules[0].name);setSubmenu(account.role==='Administrator'?adminConfig.modules[0].submenus[0]:roleConfigs[account.role].modules[0].submenus[0]);}}/>;
 const isAdmin=session.role==='Administrator';
 const config=isAdmin?adminConfig:roleConfigs[role],module=config.modules.find(m=>m.name===moduleName)||config.modules[0],activeSub=module.submenus.includes(submenu)?submenu:module.submenus[0];
-const records=session.production?runtimeRecords:(isAdmin?buildAdminRecords(module.name,activeSub):buildPersonalRecords(session,module.name,activeSub));
+const records=isAdmin?buildAdminRecords(module.name,activeSub):session.production?runtimeRecords:buildPersonalRecords(session,module.name,activeSub);
 function selectRole(r:Role){if(!isAdmin)return;setRole(r);setModuleName(roleConfigs[r].modules[0].name);setSubmenu(roleConfigs[r].modules[0].submenus[0]);setRecord(null);setSwitcher(false);setMobile(false)}
 function selectModule(m:Module){setModuleName(m.name);setSubmenu(m.submenus[0]);setRecord(null);setMobile(false)}
 function runAi(){const q=aiInput.trim();if(!q)return;setAiMessages(v=>[...v,'Anda: '+q,'EDUHOST: Saya memahami konteks '+role+' dan halaman '+module.name+' → '+activeSub+'. Untuk tindakan penting, saya akan meminta konfirmasi sebelum menerapkannya.']);setAiInput('')}
