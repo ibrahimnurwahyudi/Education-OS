@@ -1,6 +1,7 @@
 import { Component,useEffect,useState } from 'react';
 import { restoreIdentity,signInWithPassword,signOut } from './lib/supabaseAuth';
 import { hasPermission,scopeLabel,scopeRule } from './lib/authorization';
+import { loadScopedStudents } from './lib/runtimeData';
 import { Activity,Award,BarChart3,BookOpen,BrainCircuit,CalendarDays,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,FileBarChart,FileCheck2,FileText,GraduationCap,LayoutDashboard,Menu,MessageSquare,Network,NotebookPen,Plus,Search,Settings2,ShieldCheck,Sparkles,Target,Users,WalletCards,X } from 'lucide-react';
 
 type Role='Siswa'|'Orang Tua'|'Mentor'|'Institusi'|'Mentor OSN';
@@ -361,7 +362,7 @@ function PublicEducationWebsite({onLogin}:{onLogin:()=>void}){
 
 function App(){
 const [session,setSession]=useState<DemoSession|null>(null);
-const [authChecking,setAuthChecking]=useState(true);
+const [authChecking,setAuthChecking]=useState(true);\nconst [runtimeRecords,setRuntimeRecords]=useState<RecordItem[]>([]);\nconst [runtimeLoading,setRuntimeLoading]=useState(false);
 const [showPublicSite,setShowPublicSite]=useState(true);
 const [,setDataVersion]=useState(0);
 useEffect(()=>{const handler=()=>setDataVersion(v=>v+1);window.addEventListener('education-os-data-changed',handler);return()=>window.removeEventListener('education-os-data-changed',handler)},[]);
@@ -371,7 +372,8 @@ if(authChecking)return <div className="min-h-screen grid place-items-center bg-s
 if(!session)return showPublicSite?<PublicEducationWebsite onLogin={()=>setShowPublicSite(false)}/>:<LoginScreen onLogin={account=>{setSession(account);setRole(account.role==='Administrator'?'Institusi':account.role);setModuleName(account.role==='Administrator'?adminConfig.modules[0].name:roleConfigs[account.role].modules[0].name);setSubmenu(account.role==='Administrator'?adminConfig.modules[0].submenus[0]:roleConfigs[account.role].modules[0].submenus[0]);}}/>;
 const isAdmin=session.role==='Administrator';
 const config=isAdmin?adminConfig:roleConfigs[role],module=config.modules.find(m=>m.name===moduleName)||config.modules[0],activeSub=module.submenus.includes(submenu)?submenu:module.submenus[0];
-const records=isAdmin?buildAdminRecords(module.name,activeSub):buildPersonalRecords(session,module.name,activeSub);
+const demoRecords=isAdmin?buildAdminRecords(module.name,activeSub):buildPersonalRecords(session,module.name,activeSub);\nconst records=session.source==='supabase'?(runtimeRecords.length?runtimeRecords:[]):demoRecords;
+useEffect(()=>{let cancelled=false; if(!session||session.source!=='supabase'||isAdmin){setRuntimeRecords([]);return;} setRuntimeLoading(true); loadScopedStudents({role:session.role,personId:session.personId,organizationId:session.organization,accessToken:(session as any).accessToken},activeSub).then(rows=>{if(!cancelled)setRuntimeRecords(rows);}).catch(()=>{if(!cancelled)setRuntimeRecords([]);}).finally(()=>{if(!cancelled)setRuntimeLoading(false);}); return()=>{cancelled=true};},[session?.source,session?.role,session?.personId,session?.organization,activeSub]);
 function selectRole(r:Role){if(!isAdmin)return;setRole(r);setModuleName(roleConfigs[r].modules[0].name);setSubmenu(roleConfigs[r].modules[0].submenus[0]);setRecord(null);setSwitcher(false);setMobile(false)}
 function selectModule(m:Module){setModuleName(m.name);setSubmenu(m.submenus[0]);setRecord(null);setMobile(false)}
 function runAi(){const q=aiInput.trim();if(!q)return;setAiMessages(v=>[...v,'Anda: '+q,'EDUHOST: Saya memahami konteks '+role+' dan halaman '+module.name+' → '+activeSub+'. Untuk tindakan penting, saya akan meminta konfirmasi sebelum menerapkannya.']);setAiInput('')}
