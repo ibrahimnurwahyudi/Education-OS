@@ -2,7 +2,7 @@ import {useEffect,useMemo,useState} from 'react';
 import {ArrowRight,CheckCircle2,FileText,GraduationCap,ShieldCheck,UserRound,Users,BriefcaseBusiness} from 'lucide-react';
 import {captureOAuthSession,getCurrentAuthUser,findPendingRegistration,saveMentorApplication,saveParentDetails,saveStudentDetails,signUpRegistration,startGoogleAuth,submitRegistration,RegistrationRole} from '../lib/registration';
 
-export type GatewayAccount={username:string;password:string;role:'Siswa'|'Orang Tua'|'Mentor'|'Mentor OSN'|'Institusi'|'Administrator';name:string;personId:string;email:string;summary:string;organization:string;profile:string;organizationId?:string;accessToken?:string;refreshToken?:string;production?:boolean};
+export type GatewayAccount={username:string;password:string;role:'Siswa'|'Orang Tua'|'Mentor'|'Mentor OSN'|'Institusi'|'HRD'|'Administrator';name:string;personId:string;email:string;summary:string;organization:string;profile:string;organizationId?:string;accessToken?:string;refreshToken?:string;production?:boolean};
 const roleMeta:Record<RegistrationRole,{label:string;title:string;desc:string;icon:any}>={
  student:{label:'Siswa',title:'Pendaftaran Peserta Didik',desc:'Data peserta, sekolah, wali, dan program. Akses operasional aktif setelah proses pembayaran dan verifikasi.',icon:GraduationCap},
  parent:{label:'Orang Tua / Wali',title:'Pendaftaran Orang Tua / Wali',desc:'Identitas wali dan hubungan keluarga untuk pendampingan peserta didik.',icon:Users},
