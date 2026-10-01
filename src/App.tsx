@@ -1193,6 +1193,44 @@ function getSemanticFormContext(module:string,submenu:string){
   if(s.includes('kompetensi'))return {title:submenu+' · Competency Record',fields:['Competency ID','Kompetensi','Domain','Level target','Evidence pendukung','Assessment source','Reviewer','Status mapping'],selects:{'Status mapping':['Draft','Mapped','Needs Review','Verified']},help:'Kompetensi harus terhubung ke evidence dan sumber asesmen.'};
   if(s.includes('dokumen'))return {title:submenu+' · Document Record',fields:['Document ID','Nama dokumen','Jenis','Pemilik','Versi','Tanggal berlaku','Access scope','Status dokumen'],selects:{'Status dokumen':['Draft','Review','Approved','Archived','Expired']},help:'Dokumen memiliki owner, versioning, access scope, dan lifecycle.'};
   // Reuse the submenu's domain DetailSpec instead of a generic Operational Record.
+  // Never fall back to the generic Name/Context/Period/Status schema for role workspaces.
+  // Use domain semantics first; getDetailSpec is only consulted after the semantic branches.
+  if(s.includes('target mingguan')||s.includes('target belajar')){
+    return {title:submenu+' · Learning Goal Record',fields:['Target ID','Tujuan belajar','Kompetensi terkait','Periode target','Indikator keberhasilan','Evidence kemajuan','Review mentor','Status target'],selects:{'Status target':['Draft','Aktif','On Track','Perlu perhatian','Tercapai','Ditutup']},help:'Target belajar memiliki tujuan, kompetensi, periode, indikator, evidence kemajuan, dan review mentor.'};
+  }
+  if(s.includes('beranda belajar')||s.includes('ringkasan belajar')){
+    return {title:submenu+' · Learning Overview',fields:['Prioritas aktif','Target saat ini','Tugas jatuh tempo','Sesi berikutnya','Evidence terbaru','Gap pembelajaran','Tindakan berikutnya','Status review'],selects:{'Status review':['Belum ditinjau','Perlu perhatian','Direview','Selesai']},help:'Ringkasan belajar menghubungkan target, tugas, sesi, evidence, gap, dan tindakan; bukan master record generik.'};
+  }
+  if(s.includes('agenda hari ini')||s.includes('kalender')){
+    return {title:submenu+' · Learning Schedule',fields:['Agenda ID','Tanggal','Waktu','Aktivitas','Peserta / mentor','Tujuan sesi','Mode','Status sesi'],selects:{'Mode':['Online','Offline','Hybrid'],'Status sesi':['Terjadwal','Berlangsung','Selesai','Dibatalkan','Reschedule']},help:'Agenda mencatat kegiatan dan status pelaksanaan secara operasional.'};
+  }
+  if(s.includes('tugas aktif')||s.includes('latihan')||s.includes('pengumpulan')){
+    return {title:submenu+' · Assignment Record',fields:['Assignment ID','Judul tugas','Instruksi','Kompetensi','Deadline','Submission','Feedback','Status submission'],selects:{'Status submission':['Belum mulai','Draft','Dikumpulkan','Terlambat','Direview']},help:'Tugas dipisahkan menjadi instruksi, kompetensi, deadline, submission, feedback, dan status.'};
+  }
+  if(s.includes('materi pembelajaran')||s.includes('materi')){
+    return {title:submenu+' · Learning Content',fields:['Content ID','Judul materi','Mata pelajaran','Kompetensi','Tipe materi','Versi','Sumber','Status akses'],selects:{'Tipe materi':['Modul','Video','Dokumen','Latihan','Tautan'],'Status akses':['Tersedia','Terbatas','Diarsipkan']},help:'Materi terhubung ke subject, kompetensi, versi, sumber, dan hak akses.'};
+  }
+  if(s.includes('mata pelajaran')||s.includes('subject')){
+    return {title:submenu+' · Subject Learning Record',fields:['Subject ID','Nama mata pelajaran','Program','Kompetensi aktif','Kurikulum','Mentor','Evidence progress','Status subject'],selects:{'Status subject':['Belum mulai','Berjalan','Review','Selesai']},help:'Ruang mata pelajaran menghubungkan kurikulum, kompetensi, mentor, dan evidence.'};
+  }
+  if(s.includes('kurikulum')){
+    return {title:submenu+' · Curriculum Alignment',fields:['Curriculum ID','Versi kurikulum','Program','Mata pelajaran','Kompetensi','Urutan materi','Periode berlaku','Status alignment'],selects:{'Status alignment':['Draft','Aktif','Perlu review','Archived']},help:'Kurikulum memiliki versi, periode, kompetensi, urutan materi, dan status alignment.'};
+  }
+  if(s.includes('kehadiran')){
+    return {title:submenu+' · Attendance Record',fields:['Attendance ID','Peserta','Sesi / kelas','Tanggal / waktu','Status kehadiran','Dicatat oleh','Alasan / izin','Evidence'],selects:{'Status kehadiran':['Hadir','Terlambat','Izin','Tidak hadir']},help:'Kehadiran dicatat per peserta dan sesi, lengkap dengan timestamp, actor, dan evidence.'};
+  }
+  if(s.includes('jadwal')||s.includes('sesi')){
+    return {title:submenu+' · Session Record',fields:['Session ID','Peserta / kelas','Tanggal','Waktu mulai','Durasi','Tujuan sesi','Mentor / PIC','Status sesi'],selects:{'Status sesi':['Scheduled','Live','Completed','Cancelled','Rescheduled']},help:'Sesi memiliki peserta, waktu, tujuan, PIC, dan lifecycle pelaksanaan.'};
+  }
+  if(s.includes('asesmen')||s.includes('diagnostik')||s.includes('formatif')||s.includes('sumatif')){
+    return {title:submenu+' · Assessment Record',fields:['Assessment ID','Peserta','Jenis asesmen','Kompetensi','Instrumen / rubrik','Periode','Hasil','Status asesmen'],selects:{'Jenis asesmen':['Diagnostik','Formatif','Sumatif','Simulasi'],'Status asesmen':['Draft','Dikerjakan','Dinilai','Direview','Final']},help:'Asesmen memisahkan peserta, instrumen, kompetensi, hasil, dan review.'};
+  }
+  if(s.includes('kompetensi')||s.includes('mastery')){
+    return {title:submenu+' · Competency Record',fields:['Competency ID','Kompetensi','Domain','Level saat ini','Target level','Evidence pendukung','Assessment source','Status mapping'],selects:{'Status mapping':['Belum terukur','Mapped','Needs Review','Verified']},help:'Kompetensi harus terhubung dengan evidence dan sumber asesmen.'};
+  }
+  if(s.includes('evidence')||s.includes('karya')||s.includes('prestasi')||s.includes('sertifikat')){
+    return {title:submenu+' · Evidence Record',fields:['Evidence ID','Jenis bukti','Artefak','Sumber kegiatan','Tanggal','Kompetensi terkait','Verifier','Status verifikasi'],selects:{'Status verifikasi':['Belum diverifikasi','Menunggu review','Terverifikasi','Ditolak']},help:'Evidence memiliki sumber, kompetensi, verifier, dan status verifikasi yang dapat diaudit.'};
+  }
   const detail = getDetailSpec(module,submenu);
   const detailFields = Array.isArray(detail.fields) ? detail.fields.filter(Boolean) : [];
   if(detailFields.length){
