@@ -52,7 +52,7 @@ export async function submitRegistration(token:string,input:{applicationId?:stri
     const rows=await rest('registration_applications?id=eq.'+encodeURIComponent(input.applicationId),token,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({full_name:input.fullName,email:input.email,phone:input.phone||null,payload:input.payload,selected_program_id:input.programId||null,status:input.role==='student'?'payment_pending':'submitted',submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
     return rows?.[0]||null;
   }
-  const rows=await rest('rpc/create_registration_application',{method:'POST',body:JSON.stringify({p_requested_role:input.role,p_full_name:input.fullName,p_email:input.email,p_phone:input.phone||null,p_payload:input.payload,p_selected_program_id:input.programId||null})});
+  const rows=await rest('rpc/create_registration_application',token,{method:'POST',body:JSON.stringify({p_requested_role:input.role,p_full_name:input.fullName,p_email:input.email,p_phone:input.phone||null,p_payload:input.payload,p_selected_program_id:input.programId||null})});
   const id=rows;
   return {id};
 }
@@ -97,12 +97,12 @@ export async function saveApplicationDocument(token:string,input:Record<string,u
 }
 
 export async function prepareRegistrationBilling(token:string,applicationId:string){
-  return rest('rpc/prepare_registration_billing',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
+  return rest('rpc/prepare_registration_billing',token,{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
 }
 export async function approveMentorApplication(token:string,applicationId:string){
-  return rest('rpc/approve_mentor_application',{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
+  return rest('rpc/approve_mentor_application',token,{method:'POST',body:JSON.stringify({p_application_id:applicationId})});
 }
 
 export async function rejectMentorApplication(token:string,applicationId:string,reason?:string){
-  return rest('rpc/reject_mentor_application',{method:'POST',body:JSON.stringify({p_application_id:applicationId,p_reason:reason||null})});
+  return rest('rpc/reject_mentor_application',token,{method:'POST',body:JSON.stringify({p_application_id:applicationId,p_reason:reason||null})});
 }
