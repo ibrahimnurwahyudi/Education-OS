@@ -9,7 +9,7 @@ export type AuthIdentity={
   email:string;
   displayName:string;
   avatarUrl:string;
-  role:'Siswa'|'Orang Tua'|'Mentor'|'Institusi'|'Mentor OSN'|'Administrator';
+  role:'Siswa'|'Orang Tua'|'Mentor'|'Institusi'|'Mentor OSN'|'HRD'|'Administrator';
   personId:string;
   organizationId:string;
   organizationName:string;
