@@ -56,10 +56,10 @@ async function refresh(refreshToken:string){
 function mapRole(memberships:DbMembership[]){
   const roles=memberships.map(x=>x.role);
   if(roles.includes('admin')) return 'Administrator' as const;
+  if(roles.includes('hrd')) return 'HRD' as const;
   if(roles.includes('institution_owner')||roles.includes('academic_director')||roles.includes('academic_coordinator')||roles.includes('admissions')||roles.includes('finance')||roles.includes('auditor')) return 'Institusi' as const;
   if(roles.includes('osn_mentor')) return 'Mentor OSN' as const;
   if(roles.includes('mentor')) return 'Mentor' as const;
-  if(roles.includes('hrd')) return 'HRD' as const;
   if(roles.includes('parent')) return 'Orang Tua' as const;
   return 'Siswa' as const;
 }
