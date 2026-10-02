@@ -44,7 +44,7 @@ async function rest(path:string,token:string,init?:RequestInit){
   return json;
 }
 export async function findPendingRegistration(token:string,userId:string){
-  const rows=await rest('registration_applications?select=*&user_id=eq.'+encodeURIComponent(userId)+'&order=created_at.desc&limit=1',token);
+  const rows=await rest('registration_applications?select=*&user_id=eq.'+encodeURIComponent(userId)+'&status=not.in.(completed,rejected)&order=created_at.desc&limit=1',token);
   return rows?.[0]||null;
 }
 export async function submitRegistration(token:string,input:{applicationId?:string;role:RegistrationRole;fullName:string;email:string;phone:string;payload:RegistrationPayload;programId?:string|null}){
@@ -75,14 +75,25 @@ export async function saveMentorApplication(token:string,applicationId:string,in
 }
 export async function uploadApplicationFile(token:string,applicationId:string,userId:string,file:File){
   const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-  const path=userId+'/'+applicationId+'/'+Date.now().toString(36)+'-'+safe;
-  const res=await fetch(SUPABASE_URL+'/storage/v1/object/hr-applications/'+encodeURIComponent(path),{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+token,'Content-Type':file.type||'application/octet-stream','x-upsert':'false'},body:file});
+  const path=userId+'/'+applicationId+'/'+safe;
+  const res=await fetch(SUPABASE_URL+'/storage/v1/object/hr-applications/'+encodeURIComponent(path),{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+token,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},body:file});
   const json=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(json.message||'Gagal mengunggah dokumen.');
   return {path,file};
 }
 export async function saveApplicationDocument(token:string,input:Record<string,unknown>){
-  return rest('application_documents',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(input)});
+  const applicationId=String(input.application_id||'');
+  const documentType=String(input.document_type||'');
+  const fileName=String(input.file_name||'');
+  if(applicationId&&documentType&&fileName){
+    const existing=await rest('application_documents?select=id&application_id=eq.'+encodeURIComponent(applicationId)+'&document_type=eq.'+encodeURIComponent(documentType)+'&file_name=eq.'+encodeURIComponent(fileName)+'&limit=1',token);
+    if(existing?.[0]?.id){
+      const rows=await rest('application_documents?id=eq.'+encodeURIComponent(existing[0].id),token,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(input)});
+      return rows?.[0]||null;
+    }
+  }
+  const rows=await rest('application_documents',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(input)});
+  return rows?.[0]||null;
 }
 
 export async function prepareRegistrationBilling(token:string,applicationId:string){
