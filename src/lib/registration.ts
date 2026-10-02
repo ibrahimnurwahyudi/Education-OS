@@ -49,7 +49,7 @@ export async function findPendingRegistration(token:string,userId:string){
 }
 export async function submitRegistration(token:string,input:{applicationId?:string;role:RegistrationRole;fullName:string;email:string;phone:string;payload:RegistrationPayload;programId?:string|null}){
   if(input.applicationId){
-    const rows=await rest('registration_applications?id=eq.'+encodeURIComponent(input.applicationId),token,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({full_name:input.fullName,email:input.email,phone:input.phone||null,payload:input.payload,selected_program_id:input.programId||null,status:'payment_pending',submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
+    const rows=await rest('registration_applications?id=eq.'+encodeURIComponent(input.applicationId),token,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({full_name:input.fullName,email:input.email,phone:input.phone||null,payload:input.payload,selected_program_id:input.programId||null,status:input.role==='student'?'payment_pending':'submitted',submitted_at:new Date().toISOString(),updated_at:new Date().toISOString()})});
     return rows?.[0]||null;
   }
   const rows=await rest('rpc/create_registration_application',{method:'POST',body:JSON.stringify({p_requested_role:input.role,p_full_name:input.fullName,p_email:input.email,p_phone:input.phone||null,p_payload:input.payload,p_selected_program_id:input.programId||null})});
@@ -66,6 +66,11 @@ export async function saveParentDetails(token:string,applicationId:string,payloa
 }
 export async function saveMentorApplication(token:string,applicationId:string,input:Record<string,unknown>){
   const row={registration_application_id:applicationId,user_id:input.user_id,status:'pending',credentials:{cv:input.credentials?.cv||'',supporting:input.credentials?.supporting||[]},bio:String(input.bio||''),submitted_at:new Date().toISOString(),...input,specializations:input.specializations?String(input.specializations).split(',').map(x=>x.trim()).filter(Boolean):[],availability:{raw:String(input.availability||'')},salary_expectation_cents:input.salary_expectation?Number(String(input.salary_expectation).replace(/[^0-9]/g,''))||null:null};
+  const existing=await rest('mentor_applications?select=id&registration_application_id=eq.'+encodeURIComponent(applicationId)+'&limit=1',token);
+  if(existing?.[0]?.id){
+    const rows=await rest('mentor_applications?id=eq.'+encodeURIComponent(existing[0].id),token,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({...row,status:'pending'})});
+    return rows?.[0]||null;
+  }
   return rest('mentor_applications',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(row)});
 }
 export async function uploadApplicationFile(token:string,applicationId:string,userId:string,file:File){
