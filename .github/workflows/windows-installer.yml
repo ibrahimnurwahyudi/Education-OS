@@ -1,0 +1,46 @@
+name: Education OS — Windows Offline Installer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'electron/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.ts'
+      - '.github/workflows/windows-installer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-installer:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build web application
+        run: npm run build
+
+      - name: Build Windows installer
+        run: npm run build:desktop
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: education-os-windows-installer
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 30
