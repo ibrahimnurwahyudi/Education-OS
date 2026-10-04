@@ -11,7 +11,7 @@ async function auth(path:string,body:Record<string,unknown>){
   return json;
 }
 export async function signUpRegistration(email:string,password:string,role:RegistrationRole,fullName:string,phone:string,payload:RegistrationPayload){
-  const emailRedirectTo=window.location.origin+'/Education-OS/app/';
+  const emailRedirectTo=window.location.origin+window.location.pathname;
   return auth('signup',{email,password,options:{email_redirect_to:emailRedirectTo,data:{education_role:role,full_name:fullName,phone,registration_payload:payload}}});
 }
 export function startGoogleAuth(role?:RegistrationRole){
