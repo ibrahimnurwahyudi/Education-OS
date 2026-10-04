@@ -503,3 +503,6 @@ body{background:var(--eo-page);color:var(--eo-text)}
   .materio-admin-shell .materio-user{display:none}
   .materio-admin-shell .materio-context-meta{grid-template-columns:1fr}
 }
+
+.mobile-menu-backdrop{display:none}
+@media(max-width:760px){.mobile-menu-backdrop{display:block;position:fixed;inset:0;z-index:65;border:0;background:rgba(2,6,23,.35)}}
