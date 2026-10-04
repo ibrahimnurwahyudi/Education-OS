@@ -381,3 +381,125 @@ body{background:var(--eo-page);color:var(--eo-text)}
 @media(max-width:900px){
   .m-role-workspace>div>main{padding:12px}
 }
+
+
+/* Education OS — administrator trial + mobile navigation */
+.admin-trial-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:.35rem .6rem;
+  border:1px solid #cfd5ff;
+  border-radius:999px;
+  background:#f1f2ff;
+  color:#454aa6;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.035em;
+  white-space:nowrap;
+}
+.materio-admin-shell .materio-sidebar{transition:transform .22s ease}
+@media(max-width:760px){
+  .materio-admin-shell{display:block;min-height:100vh}
+  .materio-admin-shell .materio-sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:min(86vw,310px);
+    height:100dvh;
+    max-height:none;
+    min-height:0;
+    margin:0;
+    border-right:1px solid #dfe3ea;
+    border-bottom:0;
+    transform:translateX(-105%);
+    transition:transform .22s ease;
+    z-index:70;
+  }
+  .materio-admin-shell .materio-sidebar.is-open{transform:translateX(0)}
+  .materio-admin-shell .materio-page{margin-left:0;min-width:0;width:100%}
+  .materio-admin-shell .materio-navbar{
+    min-height:60px;
+    padding:.55rem .65rem;
+    gap:.4rem;
+  }
+  .materio-admin-shell .materio-search{
+    width:min(54vw,240px);
+    min-width:0;
+  }
+  .materio-admin-shell .materio-navbar-actions{gap:.15rem}
+  .materio-admin-shell .admin-trial-badge{
+    max-width:112px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .materio-admin-shell .materio-content{padding:.75rem .65rem 1.25rem}
+  .materio-admin-shell .materio-page-heading{
+    gap:.75rem;
+    margin-bottom:.75rem;
+  }
+  .materio-admin-shell .materio-page-heading h1{
+    font-size:1.2rem;
+    line-height:1.25;
+  }
+  .materio-admin-shell .materio-page-heading p{
+    font-size:.7rem;
+    line-height:1.45;
+  }
+  .materio-admin-shell .materio-heading-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .materio-admin-shell .materio-heading-actions button{
+    width:100%;
+  }
+  .materio-admin-shell .materio-context-strip{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:.6rem;
+    padding:.75rem;
+  }
+  .materio-admin-shell .materio-context-meta{
+    display:grid!important;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    gap:.35rem!important;
+  }
+  .materio-admin-shell .materio-context-meta span{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .materio-admin-shell .m-topbar{
+    padding:.8rem;
+  }
+  .materio-admin-shell .m-topbar .m-title{font-size:1rem}
+  .materio-admin-shell .m-topbar .m-subtitle{font-size:.68rem}
+  .materio-admin-shell .m-topbar>div:last-child{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .materio-admin-shell .m-topbar>div:last-child button{width:100%}
+  .materio-admin-shell .m-role-workspace,
+  .materio-admin-shell .m-role-workspace>div>main{min-width:0}
+  .materio-admin-shell .m-role-workspace>div>main{padding:.7rem}
+  .materio-admin-shell .m-table-scroll{width:100%;overflow-x:auto}
+  .materio-admin-shell .m-modal{padding:.5rem}
+  .materio-admin-shell .m-modal-card{
+    width:100%;
+    max-height:94dvh;
+    border-radius:.7rem;
+  }
+  .materio-admin-shell .m-modal-card>div{padding:.8rem}
+}
+@media(max-width:420px){
+  .materio-admin-shell .materio-search{width:42vw}
+  .materio-admin-shell .admin-trial-badge{max-width:86px;font-size:.52rem;padding:.3rem .45rem}
+  .materio-admin-shell .materio-icon-btn{width:31px;height:31px}
+  .materio-admin-shell .materio-user{display:none}
+  .materio-admin-shell .materio-context-meta{grid-template-columns:1fr}
+}
