@@ -59,8 +59,7 @@ function TrialExpiredScreen(){
       <button onClick={()=>window.location.reload()} className="mt-6 w-full rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950">Muat ulang</button>
     </section>
   </div>;
-}
-\nconst roleConfigs:Record<Role,{audience:string;description:string;modules:Module[]}>={
+}\nconst roleConfigs:Record<Role,{audience:string;description:string;modules:Module[]}>={
 'Siswa':{audience:'Ruang Belajar Siswa',description:'Ruang belajar personal untuk mengelola program, sesi, tugas, asesmen, kompetensi, dan portofolio.',modules:[
 {name:'Beranda Belajar',icon:LayoutDashboard,description:'Ringkasan belajar dan tindakan yang perlu dilakukan.',submenus:['Ringkasan Belajar','Agenda Hari Ini','Tugas Saya','Target Mingguan','Pemberitahuan'],actions:['Buka agenda','Lihat tugas']},
 {name:'Program Saya',icon:BookOpen,description:'Program, mata pelajaran, kelas, kurikulum, dan materi.',submenus:['Program Aktif','Mata Pelajaran','Kelas / Kelompok','Kurikulum Pembelajaran','Materi Pembelajaran'],actions:['Lihat program','Buka materi']},
