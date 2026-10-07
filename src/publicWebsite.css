@@ -50,3 +50,22 @@
 .eo-proof-list b{font-size:11px}.eo-proof-list small{margin-top:5px;color:#94a3b8;font-size:9px;line-height:1.6}
 @media(max-width:900px){.eo-journey-panel,.eo-proof-grid{grid-template-columns:1fr;gap:25px}.eo-journey-copy{padding:4px}.eo-proof-list{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){.eo-journey-switcher{grid-template-columns:1fr 1fr}.eo-journey-switcher button{justify-content:flex-start;padding:0 12px}.eo-journey-panel{padding:16px}.eo-mini-grid{grid-template-columns:1fr}.eo-mini-grid>div{min-height:auto}.eo-proof-list{grid-template-columns:1fr}.eo-proof{padding:72px 0}}
+
+
+/* UX hardening inspired by MIT-licensed Launch UI patterns: visible focus, motion preferences, touch targets and readable interaction states. */
+.eo-site :is(a,button):focus-visible{outline:3px solid rgba(37,99,235,.28);outline-offset:3px}
+.eo-site button,.eo-site a{touch-action:manipulation}
+.eo-site .eo-nav-links button,.eo-site .eo-nav-links a{min-height:40px}
+.eo-site .eo-journey-switcher button{min-height:52px}
+@media(prefers-reduced-motion:reduce){
+  .eo-site *,.eo-site *::before,.eo-site *::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+@media(max-width:720px){
+  .eo-announcement-inner{gap:8px}
+  .eo-announcement-inner span{line-height:1.35}
+  .eo-announcement-inner button{white-space:nowrap}
+  .eo-brand small{font-size:7px}
+  .eo-nav{padding-left:11px}
+  .eo-hero h1{max-width:100%;letter-spacing:-.055em}
+  .eo-window{box-shadow:0 18px 45px rgba(15,23,42,.12)}
+}
