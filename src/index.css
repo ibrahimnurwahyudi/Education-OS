@@ -687,3 +687,234 @@ body{background:var(--eo-page);color:var(--eo-text)}
     grid-column:1 / -1;
   }
 }
+
+
+/* Education OS — Admin Dashboard contrast system v2
+   High-contrast enterprise palette: dark navigation, bright workspace, semantic actions. */
+.materio-admin-shell{
+  --admin-navy:#111827;
+  --admin-navy-2:#1f2937;
+  --admin-indigo:#4f46e5;
+  --admin-indigo-dark:#3730a3;
+  --admin-bg:#f3f6fa;
+  --admin-card:#ffffff;
+  --admin-text:#111827;
+  --admin-body:#334155;
+  --admin-muted:#64748b;
+  --admin-border:#cbd5e1;
+  background:var(--admin-bg)!important;
+  color:var(--admin-body)!important;
+}
+.materio-admin-shell .materio-sidebar{
+  background:var(--admin-navy)!important;
+  border-right:1px solid #374151!important;
+  box-shadow:4px 0 18px rgba(15,23,42,.14)!important;
+}
+.materio-admin-shell .materio-brand{
+  background:#0b1220!important;
+  border-bottom:1px solid #374151!important;
+}
+.materio-admin-shell .materio-brand-name{color:#fff!important}
+.materio-admin-shell .materio-brand-sub{color:#cbd5e1!important}
+.materio-admin-shell .materio-brand-mark{
+  background:#6366f1!important;
+  border:1px solid #818cf8!important;
+  box-shadow:0 4px 14px rgba(99,102,241,.35)!important;
+}
+.materio-admin-shell .materio-tenant{
+  background:#1f2937!important;
+  border-color:#475569!important;
+}
+.materio-admin-shell .materio-tenant-label,
+.materio-admin-shell .materio-section-label,
+.materio-admin-shell .materio-eyebrow{color:#cbd5e1!important}
+.materio-admin-shell .materio-tenant-name{color:#fff!important}
+.materio-admin-shell .materio-tenant-meta{color:#94a3b8!important}
+.materio-admin-shell .materio-nav-item{
+  color:#e2e8f0!important;
+  border:1px solid transparent!important;
+}
+.materio-admin-shell .materio-nav-item:hover{
+  background:#263244!important;
+  color:#fff!important;
+  border-color:#475569!important;
+}
+.materio-admin-shell .materio-nav-item.active{
+  background:#4f46e5!important;
+  color:#fff!important;
+  border-color:#818cf8!important;
+  box-shadow:0 3px 10px rgba(79,70,229,.3);
+}
+.materio-admin-shell .materio-subnav{
+  border-left-color:#475569!important;
+}
+.materio-admin-shell .materio-subnav-item{color:#cbd5e1!important}
+.materio-admin-shell .materio-subnav-item:hover{
+  background:#263244!important;
+  color:#fff!important;
+}
+.materio-admin-shell .materio-subnav-item.active{
+  background:#312e81!important;
+  color:#fff!important;
+  font-weight:700;
+}
+.materio-admin-shell .materio-ai-button{
+  background:#1e293b!important;
+  border-color:#6366f1!important;
+  color:#c7d2fe!important;
+}
+.materio-admin-shell .materio-ai-button small{color:#cbd5e1!important}
+
+.materio-admin-shell .materio-page,
+.materio-admin-shell .materio-content{background:var(--admin-bg)!important}
+.materio-admin-shell .materio-navbar{
+  background:#fff!important;
+  border-bottom:1px solid var(--admin-border)!important;
+  box-shadow:0 1px 5px rgba(15,23,42,.06)!important;
+}
+.materio-admin-shell .materio-search{
+  background:#f8fafc!important;
+  border:1px solid #b8c2d0!important;
+  color:#475569!important;
+}
+.materio-admin-shell .materio-search input{
+  color:#111827!important;
+}
+.materio-admin-shell .materio-search input::placeholder{color:#64748b!important}
+.materio-admin-shell .materio-icon-btn{
+  color:#334155!important;
+  border:1px solid transparent!important;
+}
+.materio-admin-shell .materio-icon-btn:hover{
+  background:#eef2ff!important;
+  color:#3730a3!important;
+  border-color:#c7d2fe!important;
+}
+.materio-admin-shell .materio-user{border-left-color:#cbd5e1!important}
+.materio-admin-shell .materio-user-copy b{color:#111827!important}
+.materio-admin-shell .materio-user-copy span{color:#64748b!important}
+.materio-admin-shell .materio-avatar{
+  background:#4f46e5!important;
+  border:2px solid #c7d2fe!important;
+}
+
+.materio-admin-shell .materio-breadcrumb{color:#64748b!important}
+.materio-admin-shell .materio-breadcrumb strong{color:#334155!important}
+.materio-admin-shell .materio-page-heading h1{color:#111827!important;font-weight:800!important}
+.materio-admin-shell .materio-page-heading p{color:#475569!important}
+.materio-admin-shell .materio-context-strip,
+.materio-admin-shell .materio-switcher>button,
+.materio-admin-shell .m-card,
+.materio-admin-shell .m-topbar,
+.materio-admin-shell .m-kpi,
+.materio-admin-shell .m-table{
+  background:var(--admin-card)!important;
+  border:1px solid var(--admin-border)!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.055)!important;
+}
+.materio-admin-shell .materio-context-strip b,
+.materio-admin-shell .materio-switcher>button b,
+.materio-admin-shell .m-title,
+.materio-admin-shell .m-kpi-value{
+  color:var(--admin-text)!important;
+}
+.materio-admin-shell .materio-context-strip small,
+.materio-admin-shell .materio-context-meta,
+.materio-admin-shell .materio-page-heading p,
+.materio-admin-shell .m-subtitle,
+.materio-admin-shell .m-kpi-note{
+  color:var(--admin-muted)!important;
+}
+.materio-admin-shell .materio-switcher>button{
+  color:var(--admin-body)!important;
+}
+.materio-admin-shell .materio-switcher>button.active{
+  background:#eef2ff!important;
+  border:2px solid #6366f1!important;
+}
+.materio-admin-shell .m-eyebrow,
+.materio-admin-shell .m-section-label,
+.materio-admin-shell .m-kpi-label{color:#475569!important}
+
+.materio-admin-shell .m-primary{
+  background:#4f46e5!important;
+  border:1px solid #3730a3!important;
+  color:#fff!important;
+  box-shadow:0 2px 5px rgba(79,70,229,.22);
+}
+.materio-admin-shell .m-primary:hover{
+  background:#3730a3!important;
+  border-color:#312e81!important;
+}
+.materio-admin-shell .m-outline{
+  background:#fff!important;
+  color:#1e293b!important;
+  border:1px solid #94a3b8!important;
+}
+.materio-admin-shell .m-outline:hover{
+  background:#eef2ff!important;
+  color:#312e81!important;
+  border-color:#6366f1!important;
+}
+.materio-admin-shell .m-nav-item.active{
+  color:#fff!important;
+}
+
+.materio-admin-shell table th{
+  background:#e2e8f0!important;
+  color:#1e293b!important;
+  border-bottom:2px solid #94a3b8!important;
+  font-weight:800!important;
+}
+.materio-admin-shell table td{
+  color:#334155!important;
+  border-bottom:1px solid #dbe2ea!important;
+}
+.materio-admin-shell table td:first-child{
+  color:#111827!important;
+  font-weight:700!important;
+}
+.materio-admin-shell table tr:nth-child(even) td{background:#f8fafc!important}
+.materio-admin-shell table tr:hover td{background:#eef2ff!important}
+.materio-admin-shell .m-status{
+  border:1px solid #c7d2fe!important;
+  background:#eef2ff!important;
+  color:#3730a3!important;
+}
+.materio-admin-shell .m-status.success{
+  background:#dcfce7!important;color:#166534!important;border-color:#86efac!important;
+}
+.materio-admin-shell .m-status.warning{
+  background:#fef3c7!important;color:#92400e!important;border-color:#fbbf24!important;
+}
+.materio-admin-shell .m-status.danger{
+  background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;
+}
+.materio-admin-shell .m-input{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #94a3b8!important;
+}
+.materio-admin-shell .m-input::placeholder{color:#64748b!important}
+.materio-admin-shell .m-input:focus{
+  border-color:#4f46e5!important;
+  box-shadow:0 0 0 3px rgba(79,70,229,.15)!important;
+}
+.materio-admin-shell .m-label{color:#1e293b!important}
+.materio-admin-shell .m-help{color:#64748b!important}
+.materio-admin-shell .m-detail{
+  background:#fff!important;
+  border:1px solid #cbd5e1!important;
+}
+.materio-admin-shell .m-detail dt{color:#64748b!important}
+.materio-admin-shell .m-detail dd{color:#1e293b!important}
+.materio-admin-shell .m-chip{
+  background:#f1f5f9!important;
+  color:#334155!important;
+  border:1px solid #cbd5e1!important;
+}
+.materio-admin-shell .admin-trial-badge{
+  background:#fef3c7!important;
+  color:#92400e!important;
+  border-color:#f59e0b!important;
+}
