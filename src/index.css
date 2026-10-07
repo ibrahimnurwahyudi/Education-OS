@@ -918,3 +918,44 @@ body{background:var(--eo-page);color:var(--eo-text)}
   color:#92400e!important;
   border-color:#f59e0b!important;
 }
+
+
+/* Final operational form action separation */
+.m-modal-card .m-form-actions,
+.m-modal-card .form-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:12px!important;
+  flex-wrap:wrap!important;
+  padding-top:16px;
+}
+.m-modal-card .m-form-actions > button,
+.m-modal-card .form-actions > button{
+  flex:0 0 auto!important;
+  min-width:104px!important;
+  min-height:40px!important;
+  margin:0!important;
+  border-width:1px!important;
+  border-style:solid!important;
+  white-space:nowrap!important;
+}
+.m-modal-card .m-form-actions .m-print{order:1}
+.m-modal-card .m-form-actions .m-cancel{order:2}
+.m-modal-card .m-form-actions .m-save{order:3}
+@media(max-width:560px){
+  .m-modal-card .m-form-actions,
+  .m-modal-card .form-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:10px!important;
+  }
+  .m-modal-card .m-form-actions .m-print{
+    grid-column:1 / -1;
+  }
+  .m-modal-card .m-form-actions > button,
+  .m-modal-card .form-actions > button{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
