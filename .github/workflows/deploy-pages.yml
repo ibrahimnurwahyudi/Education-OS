@@ -37,7 +37,13 @@ jobs:
           rm -rf pages-site
           mkdir -p pages-site
           cp -R dist/. pages-site/
+          # Keep the public website at root and expose the Education OS app at /app/.
+          # Vite uses relative asset paths, so the same build can be served from either location.
+          rm -rf pages-site/app
+          mkdir -p pages-site/app
+          cp -R dist/. pages-site/app/
           test -f pages-site/index.html
+          test -f pages-site/app/index.html
           find pages-site -maxdepth 2 -type f | sort | head -80
 
       - name: Setup Pages
