@@ -29,7 +29,7 @@ const demoAccounts:DemoAccount[]=[
 ];
 
 
-const ADMIN_TRIAL_KEY='education-os-admin-trial-start';
+const ADMIN_TRIAL_KEY='education-os-admin-trial-start-v2';
 const ADMIN_TRIAL_DAYS=7;
 const ADMIN_TRIAL_MS=ADMIN_TRIAL_DAYS*24*60*60*1000;
 const trialAdminAccount:DemoAccount={username:'trial-admin',password:'',role:'Administrator',name:'Education OS Administrator',personId:'ADM-TRIAL-001',email:'administrator@trial.education-os.id',summary:'Administrator trial · akses global untuk evaluasi Education OS.',organization:'Education OS',profile:'Trial administrator · tanpa login · akses otomatis selama 7 hari.'};
