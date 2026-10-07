@@ -1522,7 +1522,6 @@ function FormModal({type,role,module,submenu,personId,onClose}:{type:string;role
   const baseCtx=getFormContext(module,submenu,typeText);
   const ctx=adminFormSpec?{title:adminSpec!.entity,fields:adminFormSpec.fields.map(f=>f.label),selects:Object.fromEntries(adminFormSpec.fields.filter(f=>f.kind==='select').map(f=>[f.label,f.options||adminSpec!.lifecycle])),help:adminSpec!.purpose}:baseCtx;
   const detail=getDetailSpec(module,submenu);
-  const printableForm=/finance|accounting|invoice|tagihan|pembayaran|payment|refund|payout|rekonsiliasi|piutang|pendapatan|biaya|budget|laporan|report|dokumen|document|sertifikat|certificate|receipt|kwitansi|surat|berita acara/i.test(module+' '+submenu+' '+typeText+' '+ctx.title);
   const fields=isStage?['Tahap','Status saat ini','Tanggal tindakan','Penanggung jawab','Detail tindakan','Evidence','Review / validasi','Catatan','Tindak lanjut']:ctx.fields;
   const [values,setValues]=useState<Record<string,string>>({});
   const save=()=>{
@@ -1538,7 +1537,7 @@ function FormModal({type,role,module,submenu,personId,onClose}:{type:string;role
       <div className="p-5">
         <div className="mb-5 grid gap-3 md:grid-cols-3"><div className="m-detail"><dt>Entity</dt><dd>{ctx.title}</dd></div><div className="m-detail"><dt>Workflow</dt><dd>{detail.lifecycle.join(' → ')}</dd></div><div className="m-detail"><dt>Action</dt><dd>{typeText}</dd></div></div>
         <div className="grid gap-4 md:grid-cols-2">{fields.map(f=><label key={f}><span className="m-label">{f}</span>{f==='Tahap'?<select className="m-input" value={values[f]||stage} onChange={e=>setValues(v=>({...v,[f]:e.target.value}))}>{detail.lifecycle.map(x=><option key={x}>{x}</option>)}</select>:ctx.selects[f]?<select className="m-input" value={values[f]||''} onChange={e=>setValues(v=>({...v,[f]:e.target.value}))}><option value="">Pilih {f}</option>{ctx.selects[f].map(x=><option key={x}>{x}</option>)}</select>:/detail|evidence|catatan|review|feedback|instruksi|solusi|rekomendasi|interpretasi|keterangan|alamat/i.test(f)?<textarea className="m-input min-h-28" value={values[f]||''} onChange={e=>setValues(v=>({...v,[f]:e.target.value}))} placeholder={'Masukkan '+f.toLowerCase()+'...'}/>:<input className="m-input" value={values[f]||''} onChange={e=>setValues(v=>({...v,[f]:e.target.value}))} placeholder={'Masukkan '+f.toLowerCase()+'...'}/>}<div className="m-help">{f===fields[0]?'Identitas utama untuk record submenu ini.':'Field operasional khusus untuk '+submenu+'.'}</div></label>)}</div>
-        <div className="m-form-actions mt-6 border-t border-[#e7e7ef] pt-4">{printableForm&&<button type="button" onClick={()=>window.print()} className="m-print" title="Cetak form"><FileText size={14}/>Cetak</button>}<button type="button" onClick={onClose} className="m-cancel">Batal</button><button type="button" onClick={save} className="m-save">{isStage?'Simpan perubahan':'Simpan'}</button></div>
+        <div className="m-form-actions mt-6 border-t border-[#e7e7ef] pt-4"><button type="button" onClick={()=>window.print()} className="m-print" title="Cetak form"><FileText size={14}/>Cetak</button><button type="button" onClick={onClose} className="m-cancel">Batal</button><button type="button" onClick={save} className="m-save">{isStage?'Simpan perubahan':'Simpan'}</button></div>
       </div>
     </div>
   </div>
