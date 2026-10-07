@@ -1016,7 +1016,7 @@ function AdminOperationalWorkspace({module,submenu,onAction}:{module:Module;subm
   return <div className="materio-admin">
     <div className="m-topbar">
       <div><div className="m-eyebrow">Education OS · Command Center · {module.name}</div><div className="m-title">{spec.entity}</div><div className="m-subtitle">{spec.purpose||spec.entity+' management workspace'} · Entity: <strong>{spec.entity}</strong></div></div>
-      <div className="flex flex-wrap gap-2"><button className="m-primary" onClick={()=>openCreate()}><Plus size={14} className="mr-1 inline"/>Tambah {spec.entity{'}'}</button></div>
+      <div className="flex flex-wrap gap-2"><button className="m-primary" onClick={()=>openCreate()}><Plus size={14} className="mr-1 inline"/>Tambah {spec.entity}</button></div>
     </div>
     <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
       <aside className="m-sidebar">
