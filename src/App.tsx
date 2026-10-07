@@ -5,6 +5,7 @@ import HRDWorkspace from './components/HRDWorkspace';
 import LearningIntelligenceWorkspace from './components/LearningIntelligenceWorkspace';
 import {captureOAuthSession} from './lib/registration';
 import { loadScopedStudentRecords } from './lib/runtimeData';
+import { installIndonesianInterface } from './lib/indonesianUI';
 import { Activity,Award,BarChart3,BookOpen,BrainCircuit,CalendarDays,CheckCircle2,ChevronDown,ChevronRight,ClipboardCheck,FileBarChart,FileCheck2,FileText,GraduationCap,LayoutDashboard,Menu,MessageSquare,Network,NotebookPen,Plus,Search,Settings2,ShieldCheck,Sparkles,Target,Users,WalletCards,X } from 'lucide-react';
 
 type Role='Siswa'|'Orang Tua'|'Mentor'|'Institusi'|'Mentor OSN'|'HRD';
@@ -1456,4 +1457,7 @@ function AiPanel({role,module,submenu,messages,input,setInput,onSend,onClose}:{r
 
 function Modal({title,onClose,children}:{title:string;onClose:()=>void;children:any}){return <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-4 backdrop-blur-sm"><div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl"><div className="mb-5 flex items-start justify-between gap-4"><div><div className="text-xs uppercase tracking-widest text-slate-600">Education OS</div><h2 className="mt-1 text-xl font-semibold">{title}</h2></div><button onClick={onClose} className="rounded-xl p-2 hover:bg-white/5"><X size={18}/></button></div>{children}</div></div>}
 function InfoCard({title,children}:{title:string;children:any}){return <div className="rounded-2xl border border-white/10 bg-white/[.025] p-5"><div className="text-xs uppercase tracking-widest text-slate-600">{title}</div><div className="mt-3 text-sm leading-6 text-slate-400">{children}</div></div>}
-export default function EducationOS(){return <AppErrorBoundary><App/></AppErrorBoundary>}
+export default function EducationOS(){
+  useEffect(()=>installIndonesianInterface(),[]);
+  return <AppErrorBoundary><App/></AppErrorBoundary>
+}
