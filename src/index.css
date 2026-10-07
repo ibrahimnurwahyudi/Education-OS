@@ -552,3 +552,138 @@ body{background:var(--eo-page);color:var(--eo-text)}
 
 .mobile-menu-backdrop{display:none}
 @media(max-width:760px){.mobile-menu-backdrop{display:block;position:fixed;inset:0;z-index:65;border:0;background:rgba(2,6,23,.35)}}
+
+
+/* Education OS — definitive action-button hierarchy */
+.m-form-actions{
+  align-items:center;
+  justify-content:flex-end;
+  gap:.625rem !important;
+  padding-top:1rem;
+}
+.m-form-actions > button{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:.4rem;
+  min-height:40px !important;
+  min-width:96px;
+  padding:.65rem .95rem !important;
+  border-width:1px !important;
+  border-style:solid !important;
+  border-radius:.55rem !important;
+  box-sizing:border-box;
+  font-size:.75rem;
+  font-weight:700;
+  line-height:1.15;
+  white-space:nowrap;
+  box-shadow:none;
+  transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .15s ease;
+}
+.m-form-actions > button:hover{transform:translateY(-1px)}
+.m-form-actions > .m-cancel{
+  background:#fff !important;
+  color:#4b5563 !important;
+  border-color:#cbd5e1 !important;
+}
+.m-form-actions > .m-cancel:hover{
+  background:#f1f5f9 !important;
+  border-color:#94a3b8 !important;
+}
+.m-form-actions > .m-save{
+  background:#4f46e5 !important;
+  color:#fff !important;
+  border-color:#4338ca !important;
+}
+.m-form-actions > .m-save:hover{
+  background:#4338ca !important;
+  border-color:#3730a3 !important;
+}
+.m-form-actions > .m-print{
+  background:#fff !important;
+  color:#0369a1 !important;
+  border-color:#38bdf8 !important;
+}
+.m-form-actions > .m-print:hover{
+  background:#e0f2fe !important;
+  border-color:#0284c7 !important;
+}
+.m-modal-card .m-outline,
+.m-modal-card .m-primary{
+  border-width:1px !important;
+  border-style:solid !important;
+}
+.m-modal-card .m-outline{
+  border-color:#cbd5e1 !important;
+  background:#fff !important;
+  color:#334155 !important;
+}
+.m-modal-card .m-primary{
+  border-color:#4338ca !important;
+  background:#4f46e5 !important;
+  color:#fff !important;
+}
+.m-modal-card .m-outline:hover{background:#f1f5f9 !important;border-color:#94a3b8 !important}
+.m-modal-card .m-primary:hover{background:#4338ca !important;border-color:#3730a3 !important}
+
+/* Action controls throughout operational workspaces */
+.materio-admin .m-topbar .m-primary,
+.materio-admin .m-topbar .m-outline,
+.materio-admin .m-sidebar .m-outline,
+.materio-admin .m-table .m-outline,
+.m-role-workspace .m-topbar .m-primary,
+.m-role-workspace .m-sidebar .m-outline{
+  border-width:1px !important;
+  border-style:solid !important;
+  box-sizing:border-box;
+}
+.materio-admin .m-sidebar .m-outline,
+.materio-admin .m-table .m-outline,
+.m-role-workspace .m-sidebar .m-outline{
+  border-color:#cbd5e1 !important;
+  background:#fff !important;
+  color:#334155 !important;
+}
+.materio-admin .m-sidebar .m-outline:hover,
+.materio-admin .m-table .m-outline:hover,
+.m-role-workspace .m-sidebar .m-outline:hover{
+  border-color:#6366f1 !important;
+  background:#eef2ff !important;
+  color:#3730a3 !important;
+}
+
+/* Print only the active operational form, not the shell/navigation. */
+@media print{
+  @page{size:A4;margin:12mm}
+  body *{visibility:hidden !important}
+  .print-form-card,
+  .print-form-card *{visibility:visible !important}
+  .print-form-card{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    overflow:visible !important;
+    border:0 !important;
+    box-shadow:none !important;
+    background:#fff !important;
+    color:#111827 !important;
+  }
+  .print-form-card .m-form-actions,
+  .print-form-card > div:first-child button{display:none !important}
+}
+@media(max-width:560px){
+  .m-form-actions{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.5rem !important;
+  }
+  .m-form-actions > button{
+    width:100%;
+    min-width:0;
+  }
+  .m-form-actions > .m-print{
+    grid-column:1 / -1;
+  }
+}
