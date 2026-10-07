@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   ArrowRight, BrainCircuit, Check, ChevronDown, ChevronRight, CirclePlay,
-  GraduationCap, Menu, Network, ShieldCheck, Sparkles, Target, Users, X
+  GraduationCap, Menu, Network, ShieldCheck, Sparkles, Target, Users, X, BarChart3, CalendarDays
 } from 'lucide-react';
 
 const programs = [
@@ -11,6 +11,13 @@ const programs = [
   {title:'Private Learning Room',tag:'PERSONAL',text:'Pendampingan personal dengan tujuan, agenda, mentor, evidence, review, dan next action.'},
   {title:'OSN Academy',tag:'ACHIEVEMENT',text:'Problem solving, competency graph, mastery, solution review, dan pembinaan kompetisi.'},
   {title:'AI Education Core',tag:'AI',text:'AI menjadi pendamping pendidikan dengan batas peran, human review, evidence, dan audit.'},
+];
+
+const journeys = [
+  {id:'siswa',title:'Saya siswa',text:'Belajar lebih terarah, melihat evidence, target, dan langkah berikutnya.',icon:GraduationCap},
+  {id:'orang-tua',title:'Saya orang tua',text:'Memahami perkembangan anak dengan konteks yang jelas dan dapat ditelusuri.',icon:Users},
+  {id:'mentor',title:'Saya mentor',text:'Mendesain pembelajaran, membaca evidence, melakukan review, dan intervensi.',icon:BrainCircuit},
+  {id:'institusi',title:'Saya institusi',text:'Mengelola akademik, operasional, mutu, CRM, finance, dan governance.',icon:Network},
 ];
 
 const roles = [
@@ -31,6 +38,7 @@ function go(id:string){ document.getElementById(id)?.scrollIntoView({behavior:'s
 
 export default function PublicWebsite(){
   const [open,setOpen]=useState<number|null>(0);
+  const [journey,setJourney]=useState('siswa');
   const [mobile,setMobile]=useState(false);
   const [scrolled,setScrolled]=useState(false);
 
@@ -115,6 +123,17 @@ export default function PublicWebsite(){
       </div>
     </section>
 
+    <section className="eo-section eo-journeys">
+      <div className="eo-container">
+        <div className="eo-head center"><span className="eo-eyebrow">Mulai dari peran Anda</span><h2>Satu platform, pengalaman yang berbeda.</h2><p>Education OS menyesuaikan konteks, tugas, dan informasi yang tampil sesuai peran pengguna.</p></div>
+        <div className="eo-journey-switcher">{journeys.map(item=>{const Icon=item.icon;return <button key={item.id} className={journey===item.id?'active':''} onClick={()=>setJourney(item.id)}><Icon size={17}/><span>{item.title}</span></button>})}</div>
+        <div className="eo-journey-panel">
+          {journeys.map(item=>item.id===journey&&<div key={item.id} className="eo-journey-copy"><span className="eo-eyebrow">Ruang yang relevan</span><h3>{item.title}</h3><p>{item.text}</p><a href="./app/" className="eo-cta">Masuk ke Education OS <ArrowRight size={16}/></a></div>)}
+          <div className="eo-mini-ui"><div className="eo-mini-top"><span>Education OS</span><span>Personal workspace</span></div><div className="eo-mini-grid"><div><small>Tujuan aktif</small><b>Learning goal</b><span>Tujuan belajar terhubung ke kompetensi.</span></div><div><small>Evidence terbaru</small><b>Learning evidence</b><span>Sesi, asesmen, karya, dan refleksi.</span></div><div><small>Next action</small><b>Review & lanjutkan</b><span>Tindakan berikutnya berdasarkan konteks.</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
     <section id="program" className="eo-section eo-soft">
       <div className="eo-container">
         <div className="eo-head">
@@ -174,6 +193,18 @@ export default function PublicWebsite(){
       <div className="eo-container eo-faq-layout">
         <div><span className="eo-eyebrow">Pertanyaan umum</span><h2>Kompleks di belakang.<br/>Sederhana di depan.</h2><p>UX Education OS dirancang agar pengguna tidak perlu memahami seluruh arsitektur sistem untuk menyelesaikan pekerjaannya.</p></div>
         <div className="eo-faq-list">{faqs.map(([q,a],i)=><div className={open===i?'eo-faq-item open':'eo-faq-item'} key={q}><button onClick={()=>setOpen(open===i?null:i)}><b>{q}</b><ChevronDown size={18}/></button>{open===i&&<p>{a}</p>}</div>)}</div>
+      </div>
+    </section>
+
+    <section className="eo-section eo-proof">
+      <div className="eo-container eo-proof-grid">
+        <div><span className="eo-eyebrow">Fondasi sistem</span><h2>UX sederhana di depan. Arsitektur pendidikan serius di belakang.</h2><p>Website ini adalah pintu masuk. Setelah masuk, Education OS membawa pengguna ke ruang kerja dengan role, scope data, action, evidence, review, lifecycle, dan audit yang sesuai.</p></div>
+        <div className="eo-proof-list">
+          <div><span><ShieldCheck size={18}/></span><b>Evidence-based</b><small>Perkembangan dibangun dari data pembelajaran yang dapat ditelusuri.</small></div>
+          <div><span><Target size={18}/></span><b>Action-oriented</b><small>Setiap informasi diarahkan pada keputusan atau tindakan berikutnya.</small></div>
+          <div><span><BarChart3 size={18}/></span><b>Learning Intelligence</b><small>Mastery, signals, intervensi, dan rekomendasi tetap memiliki konteks.</small></div>
+          <div><span><CalendarDays size={18}/></span><b>Learning cycle</b><small>Tujuan, belajar, evidence, refleksi, review, lalu siklus berikutnya.</small></div>
+        </div>
       </div>
     </section>
 
