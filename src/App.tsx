@@ -1523,6 +1523,7 @@ function FormModal({type,role,module,submenu,personId,onClose}:{type:string;role
   const baseCtx=getFormContext(module,submenu,typeText);
   const ctx=adminFormSpec?{title:adminSpec!.entity,fields:adminFormSpec.fields.map(f=>f.label),selects:Object.fromEntries(adminFormSpec.fields.filter(f=>f.kind==='select').map(f=>[f.label,f.options||adminSpec!.lifecycle])),help:adminSpec!.purpose}:baseCtx;
   const detail=getDetailSpec(module,submenu);
+  const printableForm=/finance|accounting|invoice|tagihan|pembayaran|payment|refund|payout|rekonsiliasi|piutang|pendapatan|biaya|budget|laporan|report|dokumen|document|sertifikat|certificate|receipt|kwitansi|surat|berita acara/i.test(module+' '+submenu+' '+typeText+' '+ctx.title);
   const fields=isStage?['Tahap','Status saat ini','Tanggal tindakan','Penanggung jawab','Detail tindakan','Evidence','Review / validasi','Catatan','Tindak lanjut']:ctx.fields;
   const [values,setValues]=useState<Record<string,string>>({});
   const save=()=>{
