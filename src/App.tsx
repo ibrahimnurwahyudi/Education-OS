@@ -960,9 +960,36 @@ function getRegulatoryFormSpec(module:string,submenu:string,spec:AdminDomainSpec
   return {...common,standard:'Standar Pengelolaan + standar domain terkait',basis:['Permendikbudristek 47/2023'],fields:fallback,validation:['Field wajib harus lengkap','Relasi utama harus jelas','Status mengikuti lifecycle','Perubahan material harus dapat diaudit']};
 }
 
+function safeAdminDomainSpec(module:string,submenu:string):AdminDomainSpec{
+  try{
+    const spec=getAdminDomainSpec(module,submenu);
+    if(!spec||!Array.isArray(spec.fields)||!Array.isArray(spec.summary)||!Array.isArray(spec.actions)||!Array.isArray(spec.relations)||!Array.isArray(spec.lifecycle)) throw new Error('Invalid admin domain specification');
+    return spec;
+  }catch(error){
+    console.error('[Education OS] invalid admin domain spec:',module,submenu,error);
+    return {
+      purpose:'Workspace operasional aman untuk domain ini. Konfigurasi domain sedang dipulihkan.',
+      entity:submenu||'Operational Record',
+      fields:['Identitas','Konteks','Status','Owner'],
+      summary:['Total','Aktif','Review','Exception'],
+      actions:['Tambah record','Review record'],
+      relations:['Identity','Evidence','Audit'],
+      lifecycle:['Draft','Active','Review','Completed'],
+      empty:'Konfigurasi domain belum tersedia.'
+    };
+  }
+}
+function safeBuildAdminRecords(module:string,submenu:string):RecordItem[]{
+  try{return buildAdminRecords(module,submenu)}catch(error){
+    console.error('[Education OS] admin records recovery:',module,submenu,error);
+    const spec=safeAdminDomainSpec(module,submenu);
+    return [{id:'RECOVERY-001',title:spec.entity+' · Recovery Record',meta:module+' · '+submenu,status:spec.lifecycle[0]||'Draft',detail:'Record pemulihan aman. Silakan periksa konfigurasi domain sebelum membuat data baru.',data:{[spec.fields[0]||'Identitas']:spec.entity,[spec.fields[1]||'Konteks']:module+' · '+submenu,[spec.fields[2]||'Status']:spec.lifecycle[0]||'Draft'}}];
+  }
+}
+
 function AdminOperationalWorkspace({module,submenu,onAction}:{module:Module;submenu:string;onAction:(a:string)=>void}){
-  const spec=getAdminDomainSpec(module.name,submenu);
-  const [rows,setRows]=useState<RecordItem[]>(buildAdminRecords(module.name,submenu));
+  const spec=safeAdminDomainSpec(module.name,submenu);
+  const [rows,setRows]=useState<RecordItem[]>(()=>safeBuildAdminRecords(module.name,submenu));
   const [query,setQuery]=useState('');
   const [status,setStatus]=useState('Semua');
   const [editing,setEditing]=useState<RecordItem|null>(null);
