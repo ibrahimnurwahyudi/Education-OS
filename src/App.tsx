@@ -29,8 +29,8 @@ const demoAccounts:DemoAccount[]=[
 ];
 
 
-const ADMIN_TRIAL_KEY='education-os-admin-trial-start-v2';
-const ADMIN_TRIAL_DAYS=7;
+const ADMIN_TRIAL_KEY='education-os-admin-trial-start-v3';
+const ADMIN_TRIAL_DAYS=14;
 const ADMIN_TRIAL_MS=ADMIN_TRIAL_DAYS*24*60*60*1000;
 const trialAdminAccount:DemoAccount={username:'trial-admin',password:'',role:'Administrator',name:'Education OS Administrator',personId:'ADM-TRIAL-001',email:'administrator@trial.education-os.id',summary:'Administrator trial · akses global untuk evaluasi Education OS.',organization:'Education OS',profile:'Trial administrator · tanpa login · akses otomatis selama 7 hari.'};
 
@@ -57,7 +57,7 @@ function TrialExpiredScreen(){
       <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-cyan-300 text-slate-950"><ShieldCheck size={25}/></div>
       <div className="mt-5 text-[10px] font-bold uppercase tracking-[.22em] text-cyan-300">EDUCATION OS · ADMINISTRATOR</div>
       <h1 className="mt-2 text-2xl font-bold">Trial administrator telah berakhir</h1>
-      <p className="mt-3 text-sm leading-6 text-slate-400">Masa akses tanpa login selama 7 hari sudah selesai. Untuk melanjutkan, gunakan akses administrator resmi yang dikelola oleh Education OS.</p>
+      <p className="mt-3 text-sm leading-6 text-slate-400">Masa akses tanpa login selama 14 hari sudah selesai. Untuk melanjutkan, gunakan akses administrator resmi yang dikelola oleh Education OS.</p>
       <button onClick={()=>window.location.reload()} className="mt-6 w-full rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-950">Muat ulang</button>
     </section>
   </div>;
